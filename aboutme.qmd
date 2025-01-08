@@ -18,7 +18,7 @@ This semester, I am currently completing an internship with the Southeastern Cen
 
 ![Me!](images/Headshot.png)
 
-# Me & This Course 
+# Me & This Course
 
 As to statistics in general, I have a decently solid background through both classes and incidental learning along my research journey.
 However, I have very limited background in programming and data analysis, which is exactly why I am taking this class as a purely purely elective course.
