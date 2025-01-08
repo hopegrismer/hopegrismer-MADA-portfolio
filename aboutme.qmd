@@ -1,7 +1,67 @@
 ---
 title: "About me"
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
-Add some text and a figure describing myself.
+## Hey again!
 
-For details, see the exercise instructions. 
+My name is Hope.
+I am originally from Sioux Falls, South Dakota (FAQs: yes, we do have -50 degree wind chill; no, I did not own any livestock), but have lived in Georgia for the last five years.
+
+I’m a final semester (woo woo!) Master of Public Health student in the Environmental Health Science department.
+I am very passionate about all things at the intersection between the environmental science and human health, and applied to medical school this year which starts this July!
+In undergrad here at UGA, I was heavily involved in research within a reproductive toxicology lab.
+However, I have recently shifted gears slightly during my Masters education.
+This semester, I am currently completing an internship with the Southeastern Center of Excellence in Vector-Bourne Diseases' CDC-funded project which focuses on vector-bourne disease transmission-- more specifically, Lyme Disease and Alpha-Gal Syndrome.
+
+![Me!](images/Headshot.png)
+
+# Me & This Course 
+
+As to statistics in general, I have a decently solid background through both classes and incidental learning along my research journey.
+However, I have very limited background in programming and data analysis, which is exactly why I am taking this class as a purely purely elective course.
+I definitely think it is a missing skill-set for me when reflecting on my MPH education so far.
+And I am determined to learn and improve my confidence with something that is foreign and new to me!
+
+# Some fun facts:
+
+I went skydiving for my 21st birthday.
+
+I ran a 50 mile ultra-marathon for my 23rd birthday.
+
+My favorite sport to watch is ice hockey!!
+Go Blackhawks!!
+
+I am from South Dakota (again owned no cattle!).
+
+I love to travel (especially roadtrip) and have visited most of the states in the United States.
+
+I absolutely LOVE Law & Order, especially the old seasons.
+
+I am the proud cat parent to the sassiest cat alive, Bluebird.
+
+My hobbies include volunteering at a local food bank every week, crocheting one-too-many blankets, reading, hiking in the mountains, and ultra-marathon running.
+
+Most recently, I ran a 50 mile race this summer and have a 24-hour race coming up in a few weeks.
+
+![Crossing the finish line of said 50-mile race after 11 hours and 6 minutes!](images/Running.PNG)
+
+# Some fun data:
+
+This is some interesting data sets that I found that people have complied.
+One of my favorite things in the world is when smart people use their smarts for relatively trivial or fun "side-quests."
+
+The below data set was originally created to assist people in repurposing the LEGO sets they already own.
+It includes detailed information on LEGO parts, sets, colors, and inventories from every official LEGO set in the Rebrickable database.
+Although the data is up to date as of July 2017, the Rebrickable API provides access to more recent data.
+With this dataset, you could figure out which sets contain the most frequently used pieces, what are the rarest LEGO pieces, and how has the size of LEGO sets evolved over time.
+
+<https://www.kaggle.com/datasets/rtatman/lego-database>
+
+Similarly, the data linked below was the product of a a native New Yorker data enthusiast & their team of over 300 volunteers.
+Together, they counted and observed the squirrels living in the city of New York.
+Data in this squirrel census includes their most frequented trash cans, most popular coat patterns, and where they live.
+
+<https://github.com/rfordatascience/tidytuesday/tree/main/data/2019/2019-10-29>
