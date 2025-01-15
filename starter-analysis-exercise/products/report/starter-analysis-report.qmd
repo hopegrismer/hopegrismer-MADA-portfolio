@@ -39,7 +39,7 @@ _Write a summary of your project._
 _Provide enough background on your topic that others can understand the why and how of your analysis_ 
 
 ## Description of data and data source
-_Describe what the data is, what it contains, where it is from, etc. Eventually this might be part of a methods section._
+The dataset originally contained a collection of personal and preference-related information, primarily focused on physical attributes. The variables in the dataset are as follows: height, weight, and gender. The variable attributes of shoe size in men's US standard sizing and favorite pizza flavors among the four options of sausage, cheese, supreme, and pepperoni were added to the file. 
 
 ## Questions/Hypotheses to be addressed
 _State the research questions you plan to answer with this analysis._
