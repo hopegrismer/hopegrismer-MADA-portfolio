@@ -11,7 +11,7 @@ library(here) #for data loading/saving
 
 #path to data
 #note the use of the here() package and not absolute paths
-data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata.rds")
+data_location <- here::here("starter-analysis-exercise","data","processed-data","processeddata2.rds")
 
 #load data. 
 mydata <- readRDS(data_location)
@@ -58,7 +58,14 @@ saveRDS(lmtable2, file = table_file2)
 #### Third model fit
 # fit linear model using height as outcome, pizza flavor and shoe size as predictor
 
-lmfit3 <- lm(Height ~ Favorite Typical Pizza Flavor + Shoe Size , mydata)  
+
+#Maybe fix naming issue 
+
+names(mydata)[which(names(mydata) == "Favorite Typical Pizza Flavor")] <- "Favorite.Pizza.Flavor"
+
+names(mydata)[which(names(mydata) == "Shoe Size")] <- "Shoe.Size"
+
+lmfit3 <- lm(Height ~ Favorite.Pizza.Flavor + Shoe.Size, mydata) 
 
 # place results from fit into a data frame with the tidy function
 lmtable3 <- broom::tidy(lmfit3)
@@ -66,8 +73,11 @@ lmtable3 <- broom::tidy(lmfit3)
 #look at fit results
 print(lmtable3)
 
-d# save fit results table  
+# save fit results table  
 table_file3 = here("starter-analysis-exercise","results", "tables-files", "resulttable3.rds")
 saveRDS(lmtable3, file = table_file3)
+
+
+
 
 

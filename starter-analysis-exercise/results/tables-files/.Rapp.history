@@ -3,3 +3,5 @@ load("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/
 load("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/starter-analysis-exercise/results/tables-files/resulttable1.rds")
 load("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/starter-analysis-exercise/results/tables-files/resulttable2.rds")
 load("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/starter-analysis-exercise/results/tables-files/resulttable1.rds")
+load("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/starter-analysis-exercise/results/tables-files/resulttable2.rds")
+load("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/starter-analysis-exercise/results/tables-files/resulttable3.rds")
