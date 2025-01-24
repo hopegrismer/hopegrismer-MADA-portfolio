@@ -2,53 +2,78 @@
 title: "R Coding Exercise"
 ---
 
-Placeholder file for the future R coding exercise.
-
+```{r}
 # To load the dslabs package
 library(dslabs)
-
 # Look at help file for gapminder data
 help(gapminder)
-
 # Get an overview of the data structure 
 str(gapminder)
-
 # Generate a summary of the data 
 summary(gapminder)
+```
 
+```{r}
 # Determine the type of object gapminder is
 class(gapminder)
-
 # Subset the dataset to only include African countries
 africadata <- gapminder[gapminder$continent == "Africa", ]
-
 # Check the structure of the new africadata object
 str(africadata)
-
 # Check a summary of the new africadata object
 summary(africadata)
+```
 
+```{r}
+# Determine the type of object gapminder is
+class(gapminder)
+# Subset the dataset to only include African countries
+africadata <- gapminder[gapminder$continent == "Africa", ]
+# Check the structure of the new africadata object
+str(africadata)
+# Check a summary of the new africadata object
+summary(africadata)
+```
+
+```{r}
 # Create an object containing only the 'infant_mortality' variable
 africadata_infant <- africadata[, "infant_mortality"]
-
 # Check the structure of the new object
 str(africadata_infant)
-
 # Check a summary of the new infant mortality object
 summary(africadata_infant)
+```
 
+```{r}
+# Create an object containing only the 'infant_mortality' variable
+africadata_infant <- africadata[, "infant_mortality"]
+# Check the structure of the new object
+str(africadata_infant)
+# Check a summary of the new infant mortality object
+summary(africadata_infant)
+```
+
+```{r}
 # Create an object containing only the 'life_expectancy' variable
 africadata_life <- africadata[, "life_expectancy"]
-
 # Check the structure of the new life ex. object
 str(africadata_life)
-
 # Check a summary of the new life ex. object
 summary(africadata_life)
+```
 
+```{r}
+# Create an object containing only the 'life_expectancy' variable
+africadata_life <- africadata[, "life_expectancy"]
+# Check the structure of the new life ex. object
+str(africadata_life)
+# Check a summary of the new life ex. object
+summary(africadata_life)
+```
+
+```{r}
 # Load the plotting tools library through ggplot package
 library(ggplot2)
-
 
 # Plot life expectancy as a function of infant mortality + theme tool is something found in use of AI for my plots 
 ggplot(africadata, aes(x = infant_mortality, y = life_expectancy)) +
@@ -74,27 +99,26 @@ ggplot(africadata, aes(x = population, y = life_expectancy)) +
     y = "Life Expectancy (years)"
   ) +
   theme_minimal()
+```
 
 ## The data streaks are likely due to the large number of data plots that are close in relative number, especially on a log scale. This makes the data appear to be in streaks rather than in individual points. 
 
+```{r}
 # Identify rows where infant_mortality is missing (NA)
 missing_infant_mortality <- africadata[is.na(africadata$infant_mortality), ]
-
 # Extract the unique years with missing infant mortality data
 missing_years <- unique(missing_infant_mortality$year)
-
 # Print the result
 missing_years
-
 # Subset the africadata object to only include data for the year 2000
 africadata_2000 <- africadata[africadata$year == 2000, ]
-
 # Check the structure of the new object
 str(africadata_2000)
-
 # Check a summary of the new object
 summary(africadata_2000)
+```
 
+```{r}
 # Load necessary libraries again 
 library(ggplot2)
 
@@ -124,18 +148,19 @@ ggplot(africadata_2000, aes(x = population, y = life_expectancy)) +
     y = "Life Expectancy (years)"
   ) +
   theme_minimal()
+```
 
+
+```{r}
 # Fit a simple linear model with life expectancy as the outcome and infant mortality as the predictor
 fit1 <- lm(life_expectancy ~ infant_mortality, data = africadata_2000)
-
 # Apply the summary to fit1 to display the results
 summary(fit1)
-
 # Fit a linear model with life expectancy as the outcome and population size as the predictor
 fit2 <- lm(life_expectancy ~ population, data = africadata_2000)
-
 # Apply the summary to fit2 to display the results
 summary(fit2)
+```
 
 # Based on the data's generated significantly small p scores, there is highly statistically significant relationships between both life expectancy and infant mortality as well as life expectancy and population size. This makes intuitive sense based on what is known about demographic transition and development, which is under the purview of the gapminder data on developing African countries. 
 
