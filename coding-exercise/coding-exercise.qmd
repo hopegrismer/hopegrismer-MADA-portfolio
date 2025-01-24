@@ -162,7 +162,7 @@ summary(fit2)
 
 # Based on the data's generated significantly small p scores, there is highly statistically significant relationships between both life expectancy and infant mortality as well as life expectancy and population size. This makes intuitive sense based on what is known about demographic transition and development, which is under the purview of the gapminder data on developing African countries.
 
-## Alexis Gonzalez contributed to the following section!
+# Alexis Gonzalez contributed to the following section!
 
 ### looking at help file for greenhouse_gases data
 
