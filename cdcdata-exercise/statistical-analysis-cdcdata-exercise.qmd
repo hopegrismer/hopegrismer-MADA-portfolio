@@ -1,0 +1,164 @@
+---
+title: "CDC Data Analysis Exercise"
+---
+Weekly Influenza Vaccination Coverage, Pregnant Women 18-49 Years Old by Race and Ethnicity
+
+Weekly influenza vaccination coverage estimates for pregnant women 18–49 years are based on electronic health record (EHR) data from the Vaccine Safety Datalink (VSD) (https://www.cdc.gov/vaccine-safety-systems/vsd/), a collaboration between CDC’s Immunization Safety Office and multiple integrated health care organizations.
+
+```{r echo = FALSE}
+# Install the 'here' package 
+# Set CRAN mirror globally
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+install.packages("here")
+
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(here)  # Load the 'here' package
+
+# Load the dataset using here::here() for the file path
+data <- read.csv(here("cdcdata-exercise", "Weekly_Influenza_Vaccination_Coverage_Among_Pregnant_Women_18-49_Years__by_Race_and_Ethnicity_20250205.csv"))
+```
+First, I visualized the vaccination coverage data using race and ethnicity as indicators/variables. 
+```{r, echo = FALSE}
+# Visualize vaccination coverage by race and ethnicity
+graph1iteration = ggplot(data, aes(x = Percent, fill = Race.and.Ethnicity)) + 
+    geom_histogram(binwidth = 100, color = "black", position = "dodge") +
+    labs(title = "Vaccination Coverage Distribution by Race and Ethnicity - First Iteration",
+         x = "Vaccination Coverage (%)",
+         y = "Frequency") +
+    theme_minimal()
+
+#Display 
+print(graph1iteration)
+
+# Save first iteration of barplot
+figure_file = here("cdcdata-exercise","cdcdata-exercise-tables-graphs","barplot-coverage-by-race-first-iteration.png")
+ggsave(filename = figure_file, plot=graph1iteration)
+
+```
+In my first iteration of this graph, however, there was negative vaccination coverage (like -50%) appearing on histogram. This representation did not which doesn’t make sense in context. I looked for outliers in the data or blanks and found none. I determined the cause of the misrepresentation was the BIN size. So, I adjusted the BINS to properly display the data. 
+```{r,  echo = FALSE}
+# There is negative vaccination coverage (like -50%) appearing on histogram which doesn’t make sense in context. 
+# Check for any negative values in the Percent column
+negative_values <- data %>% filter(Percent < 0)
+print(negative_values)
+
+# Visualize vaccination coverage by race and ethnicity with updated BINS
+graph1betterbins = ggplot(data, aes(x = Percent, fill = Race.and.Ethnicity)) + 
+    geom_histogram(binwidth = 10, color = "black", position = "dodge") +
+    labs(title = "Vaccination Coverage Distribution by Race and Ethnicity",
+         x = "Vaccination Coverage (%)",
+         y = "Frequency") +
+    theme_minimal()
+
+#Display 
+print(graph1betterbins)
+
+# Save first iteration of barplot
+figure_file = here("cdcdata-exercise","cdcdata-exercise-tables-graphs","barplot-coverage-by-race-final.png")
+ggsave(filename = figure_file, plot=graph1betterbins)
+
+```
+Next, I summarized vaccination coverage by race and ethnicity in table form before generating a corresponding boxplot of vaccination coverage by race and ethnicity. This boxplot showed some interesting trends and the general variation/range within each group.
+
+```{r,  echo = FALSE}
+#### ------- Making the Distributions ----- ###
+
+# Summarize vaccination coverage by race and ethnicity
+data_summary <- data %>%
+    group_by(Race.and.Ethnicity) %>%
+    summarize(avg_vaccination_coverage = mean(Percent, na.rm = TRUE))
+
+# View the summary data
+print(data_summary)
+
+# Boxplot of vaccination coverage by race and ethnicity
+boxplot1 = ggplot(data, aes(x = Race.and.Ethnicity, y = Percent, fill = Race.and.Ethnicity)) + 
+    geom_boxplot() + 
+    labs(title = "Vaccination Coverage by Race and Ethnicity",
+         x = "Race and Ethnicity",
+         y = "Vaccination Coverage (%)") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x labels for better readability +
+theme(
+    panel.background = element_rect(fill = "white"),  # White background for the plot panel
+    plot.background = element_rect(fill = "white")    # White background for the overall plot
+)
+
+#Display 
+print(boxplot1)
+
+#Save graph1 
+figure_file = here("cdcdata-exercise","cdcdata-exercise-tables-graphs","bloxplot-coverage-by-race.png")
+ggsave(filename = figure_file, plot=boxplot1)
+
+
+```
+These means and standard deviations can be seen here as well in the data summary table. 
+```{r,  echo = FALSE}
+# Summarize the data by Race and Ethnicity to calculate the mean and standard deviation
+data_summary <- data %>%
+    group_by(Race.and.Ethnicity) %>%
+    summarize(
+        avg_vaccination_coverage = mean(Percent, na.rm = TRUE),
+        sd_vaccination_coverage = sd(Percent, na.rm = TRUE)
+    )
+
+# View the summary data
+print(data_summary)
+
+```
+I also create a bar plot showing the mean vaccination coverage with standard deviation as error bars. Similar to the other bar plot, this 
+displays the ranges and variation within each group vaccine coveraage. However, this graphic specifically includes each groups' mean and standard deviation (error bars). 
+```{r,  echo = FALSE}
+# Load necessary libraries
+library(ggplot2)
+
+# Create a bar plot showing the mean vaccination coverage with standard deviation as error bars
+barplot1 = ggplot(data_summary, aes(x = Race.and.Ethnicity, y = avg_vaccination_coverage, fill = Race.and.Ethnicity)) +
+    geom_bar(stat = "identity", color = "black", show.legend = FALSE) +  
+  
+    geom_errorbar(aes(ymin = avg_vaccination_coverage - sd_vaccination_coverage, 
+                      ymax = avg_vaccination_coverage + sd_vaccination_coverage), 
+                  width = 0.2) +  # Add error bars for SD
+    labs(title = "Mean Vaccination Coverage by Race and Ethnicity with Standard Deviation",
+         x = "Race and Ethnicity",
+         y = "Vaccination Coverage (%)") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for readability
+
+#Save barplot1 showing the mean vaccination coverage with sd error bars
+figure_file = here("cdcdata-exercise","cdcdata-exercise-tables-graphs","barplot-meanwithsd-by-race.png")
+ggsave(filename = figure_file, plot=barplot1)
+
+#Display 
+print(barplot1)
+```
+Finally, to visualize the distribution of vaccination coverage (like a bell curve or a smooth curve) for each race/ethnicity group, I created a density plot for vaccination coverage by race/ethnicity. This was my favorite graphic of this exercise. It shows very explicitly where vaccine coverage for the majority of each group for the majority of the weeks recorded is falling. Such a graphic shows unfortunate trends such as the high density of American Indian/Native American vaccine coverage data plots falling in the 20-25% coverage range.
+
+```{r,  echo = FALSE}
+#### To visualize the distribution of vaccination coverage (like a bell curve or a smooth curve) for each race/ethnicity group
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+
+# Create a density plot for vaccination coverage by race/ethnicity
+densityplot1 = ggplot(data, aes(x = Percent, fill = Race.and.Ethnicity, color = Race.and.Ethnicity)) +
+    geom_density(alpha = 0.4) +  # alpha for transparency
+    labs(title = "Density Plot of Vaccination Coverage by Race and Ethnicity",
+         x = "Vaccination Coverage (%)",
+         y = "Density") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +  # Rotate x labels for readability
+    scale_fill_brewer(palette = "Spectral") +  # Custom color palette
+    scale_color_brewer(palette = "Spectral")  # Custom color palette for lines
+
+#Save density plot for vaccination coverage by race/ethnicity
+figure_file = here("cdcdata-exercise","cdcdata-exercise-tables-graphs","density-plot-vaxcov-by-race.png")
+ggsave(filename = figure_file, plot=densityplot1)
+
+#Display 
+print(densityplot1)
+```
+

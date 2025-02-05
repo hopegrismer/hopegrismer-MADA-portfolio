@@ -14,8 +14,10 @@ website:
             file: starter-analysis-exercise/products/report/starter-analysis-report.qmd
           - text: "R Coding Exercise"
             file: coding-exercise/coding-exercise.qmd
-          - text: "Data-Exercise - Synthetic Data Analysis"
+          - text: "Data Exercise - Synthetic Data Analysis"
             file: data-exercise/data-exercise.qmd
+          - text: "CDC Data Analysis Exercise"
+            file: cdcdata-exercise/statistical-analysis-cdcdata-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/hopegrismer/hopegrismer-MADA-portfolio      
