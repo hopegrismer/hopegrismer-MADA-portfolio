@@ -19,7 +19,7 @@ website:
           - text: "CDC Data Analysis Exercise"
             file: cdcdata-exercise/statistical-analysis-cdcdata-exercise.qmd
           - text: "Presentation-Exercise"
-            file: presentation-exercise/presentation-exercise.qmd
+            file: presentation-exercise/fight-songs/presentation-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/hopegrismer/hopegrismer-MADA-portfolio      

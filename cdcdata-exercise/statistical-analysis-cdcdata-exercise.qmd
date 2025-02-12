@@ -31,7 +31,7 @@ figure_file = here("cdcdata-exercise","cdcdata-exercise-tables-graphs","barplot-
 ggsave(filename = figure_file, plot=barplot1iteration)
 
 # Print  first iteration of barplot
-print(knitr::include_graphics("cdcdata-exercise-tables-graphs"/"barplot-coverage-by-race-first-iteration.png"))
+print("barplot-coverage-by-race-first-iteration.png")
 ```
 
 ```{r}

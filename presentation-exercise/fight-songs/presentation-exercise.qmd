@@ -9,6 +9,15 @@ College fight songs are a key part of the game-day experience. The most memorabl
 
 In this analysis and displayed in the graph on "Five Thirty Eight", we collected fight songs from 65 schools across the Power Five conferences (ACC, Big Ten, Big 12, Pac-12, SEC) and Notre Dame. I found this to be super interesting as it examined common lyrical elements, such as chants and spelling, CLICHES because we know how common those are!!, as well as analyzed the tempo and duration of each song (based on available Spotify versions) to understand how these schools are musically propelled to victory. 
 
+```{r setup, include=FALSE}
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+# Install the 'here' package if not already installed
+if (!requireNamespace("here", quietly = TRUE)) {
+  install.packages("here")
+}
+```
+
+
 ```{r}
 # Load the knitr package
 library(knitr)
@@ -87,5 +96,81 @@ ggsave("./presentation-results-exercise/presentation-results-plots/fight_song_qu
 
 ```
 
+I ended up putting my final code back into AI to see what prompt it thinks would generate my final version. This was the output:
+
+AI Prompt:
+Generate a Quarto document that does the following:
+Introduction:
+Write an introduction about college fight songs, explaining how they are an integral part of the college experience and how the best ones are celebrated while the less memorable ones fade into obscurity.
+Include a section about an analysis of 65 school fight songs, collected from the Power Five conferences (ACC, Big Ten, Big 12, Pac-12, SEC) and Notre Dame. The analysis includes an exploration of common lyrical elements (such as chants and spelling) and an examination of the tempo and duration of the songs (based on Spotify data).
+Graph Section:
+Display a PNG image, titled “Graph of Fight Songs,” that is located in a specific path (presentation-results-plots folder).
+Use the knitr package to include the image with the correct file path using the here() function.
+Data Loading and Preparation:
+Load necessary libraries (e.g., ggplot2, dplyr, ggrepel, here).
+Load the data from a CSV file that is located in the presentation-exercise/fight-songs folder, using the read.csv() function and the here() package for path management.
+Analysis:
+Calculate the average duration and beats per minute (BPM) for the songs.
+Use the calculated averages for plotting the data, showing the boundaries for the quadrants on the x and y axes.
+Quadrant Plot Creation:
+Create a four-quadrant plot using ggplot2. The plot should display each song with its duration (x-axis) and BPM (y-axis).
+Include repelling text labels to avoid overlap.
+Annotate the quadrants (e.g., "Fast and Short," "Fast but Long," etc.) with text labels.
+Add dashed lines for the average BPM and duration.
+Saving the Plot:
+Save the generated plot in the presentation-results-exercise/presentation-results-plots folder with a white background.
+Make sure the explanations and commentary about the analysis are clearly written for non-technical readers.
+
+I found feeding back the code to AI and asking what would have been efficient in generating the output is an interesting loop to pursue.
+
+## Part Two - Creating a High-Quality Table
+
+I am genuinely proud of my table. I started with a general table output via a AI template structure from the following prompt: Use the same dataset you used for the graph (or a subset) to create a table that is representative of the data set. Make sure it includes meaningful metrics like song duration and beats per minute (BPM) and BPM Comparison to correspond with the quadrants.
+
+The orignal table had column headings that matched the raw data's table's headings. I renamed each to best display the data more professionally. 
+```{r}
+
+# Load necessary libraries
+library(kableExtra)
+library(dplyr)
+
+# Assuming you have a dataset 'data' with the necessary columns
+
+# Calculate summary values (if you haven't done it yet)
+summary_table <- data %>%
+  mutate(
+    avg_duration = mean(sec_duration, na.rm = TRUE),
+    avg_bpm = mean(bpm, na.rm = TRUE),
+    bpm_comparison = ifelse(bpm > avg_bpm, "Above Average", "Below Average"),
+    duration_diff = sec_duration - avg_duration,
+    bpm_diff = bpm - avg_bpm
+  )
+
+# Select only the relevant columns for the table
+summary_table <- summary_table %>%
+  select(school, bpm_comparison, duration_diff, bpm_diff)
+
+# Rename the columns for clarity
+colnames(summary_table) <- c("School", 
+                             "BPM Comparison (Above/Below Average)", 
+                             "Difference from Mean Duration (Seconds)", 
+                             "Difference from Mean BPM")
+
+# Create and style the table using kable and kableExtra
+summary_table %>%
+  kable("html", caption = "Summary of Fight Songs with Differences from the Mean") %>%
+  kable_styling(full_width = TRUE, position = "center", font_size = 12) %>%
+  column_spec(1, bold = TRUE, color = "white", background = "#0073e6") %>%
+  column_spec(2, color = "darkblue") %>%
+  column_spec(3, color = "green") %>%
+  column_spec(4, color = "orange") %>%
+  row_spec(0, bold = TRUE, background = "#d9d9d9") %>%
+  row_spec(1:nrow(summary_table), color = "black", 
+           background = ifelse(summary_table$`BPM Comparison (Above/Below Average)` == "Above Average", "#e6f7ff", "#ffe6e6")) %>%
+  footnote(general = "The above table summarizes key metrics of the fight songs, including their duration, BPM, and how they compare to the average-- both categorically and quantitatively.", 
+           general_title = "Footnote", 
+           footnote_as_chunk = TRUE)
+
+```
 
 
