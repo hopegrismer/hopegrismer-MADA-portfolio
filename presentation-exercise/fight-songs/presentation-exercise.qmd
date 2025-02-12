@@ -1,0 +1,91 @@
+---
+title: "Fight Songs"
+author: "Hope Grismer"
+date: "2025-02-12"
+output: html_document
+---
+
+College fight songs are a key part of the game-day experience. The most memorable songs are celebrated and shouted during iconic events like the Heisman Trophy presentation, while the less notable fade into obscurity.
+
+In this analysis and displayed in the graph on "Five Thirty Eight", we collected fight songs from 65 schools across the Power Five conferences (ACC, Big Ten, Big 12, Pac-12, SEC) and Notre Dame. I found this to be super interesting as it examined common lyrical elements, such as chants and spelling, CLICHES because we know how common those are!!, as well as analyzed the tempo and duration of each song (based on available Spotify versions) to understand how these schools are musically propelled to victory. 
+
+```{r}
+# Load the knitr package
+library(knitr)
+
+# Load the here package
+library(here)
+
+# Use include_graphics to display the PNG image with correct path using here()
+
+include_graphics(here("presentation-exercise", "fight-songs", "presentation-results-exercise", "presentation-results-plots", "Graph_of_Fight_Songs.png"))
+
+```
+Above is the graph that I attempted to recreate. 
+
+
+```{r}
+# Load and install required libraries
+library(ggplot2)
+install.packages("here")
+library(here)
+library(dplyr)
+library(ggrepel)  # Load the ggrepel package
+
+# Set the correct relative path to the CSV file inside the 'fight-songs' subfolder
+data <- read.csv(here("presentation-exercise", "fight-songs", "fight-songs.csv"))
+
+```
+
+I was able to download the original data. I recalculated the average valuesfor duration and BPM. I knew this was an important first step as these values are displayed as the quadrant boundaries on both the x and y axes.
+
+```{r}
+# Calculate average values for duration and BPM
+avg_duration <- mean(data$sec_duration, na.rm = TRUE)
+avg_bpm <- mean(data$bpm, na.rm = TRUE)
+```
+
+Next, the four-quadrant plot was created. Many iterations of this code was requested from the AI because of the difficulties with school labels overlapping with the quadrant labels. This is something that the original data was able to avoid by creating an interactive overlay so labels are only shown if one's cursor selects it. This is outside my current skills, but I am interested in whether this can be done within R or requires additional tech/platforms/extensions etc. I ended up switching the orientation of the labels to try to accomodate the right side.
+
+```{r}
+# Create the four-quadrant plot 
+plot = ggplot(data, aes(x = sec_duration, y = bpm, label = school)) +  # Adjusted column names
+  geom_point(aes(color = school), size = 3, alpha = 0.7) +  # Add alpha for transparency, points for each university team
+  geom_hline(yintercept = avg_bpm, linetype = "dashed", color = "lightgrey") +  # Light grey horizontal line for average BPM
+  geom_vline(xintercept = avg_duration, linetype = "dashed", color = "lightgrey") +  # Light grey vertical line for average duration
+  geom_text_repel(aes(label = school), size = 3, max.overlaps = Inf, box.padding = 0.5, force = 10) +  # Repel text labels with more space
+  labs(
+    title = "Fight Songs Quadrant Plot",
+    x = "Song Duration (seconds)",
+    y = "Beats Per Minute (BPM)"
+  ) +
+  theme_minimal(base_size = 14) +  # Increase base font size for better readability
+  theme(
+    legend.position = "none",  # Remove legend for cleaner look
+    plot.margin = margin(10, 10, 10, 10),  # Increase margins to avoid cutting off labels
+    plot.title = element_text(hjust = 0.5)  # Center the title
+  ) +
+  # Annotate the quadrant labels vertically in the corners, adjusted laterally
+  # Top-left quadrant ("Fast and Short") - moved up a bit
+  annotate("text", x = avg_duration * 0.15, y = 120, label = "Fast and Short", color = "blue", size = 4, angle = 0, fontface = "bold") +  # Moved up slightly
+  # Top-right quadrant ("Fast but Long") - moved slightly further right
+  annotate("text", x = avg_duration * 2.3, y = avg_bpm * 1.1, label = "Fast but Long", color = "blue", size = 4, angle = 90, fontface = "bold") +  # Bolded text
+  # Bottom-left quadrant ("Short but Slow")
+  annotate("text", x = avg_duration * 0.05, y = avg_bpm * 0.7, label = "Short but Slow", color = "blue", size = 4, angle = 90, fontface = "bold") +  # Bolded text
+  # Bottom-right quadrant ("Slow and Long")
+  annotate("text", x = avg_duration * 1.95, y = avg_bpm * 0.7, label = "Slow and Long", color = "blue", size = 4, angle = 90, fontface = "bold")  # Bolded text
+```
+
+
+Here is the quadrant plot I was able to generate below.
+```{r}
+# Print the plot
+print(plot)
+
+# Save the plot into the "fight-songs" folder with a white background
+ggsave("./presentation-results-exercise/presentation-results-plots/fight_song_quadrant_plot.png", plot = plot, width = 10, height = 8, dpi = 300, bg = "white")
+
+```
+
+
+

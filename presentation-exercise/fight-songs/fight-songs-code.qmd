@@ -1,0 +1,157 @@
+---
+title: "Fight Songs"
+author: "Hope Grismer"
+date: "2025-02-12"
+output: html_document
+---
+## Fun Background on my Data - Paraphrased from Original Published Article
+
+College fight songs are a key part of the game-day experience. The most memorable songs are celebrated and shouted during iconic events like the Heisman Trophy presentation, while the less notable fade into obscurity.
+
+In this analysis and displayed in the graph on "Five Thirty Eight", we collected fight songs from 65 schools across the Power Five conferences (ACC, Big Ten, Big 12, Pac-12, SEC) and Notre Dame. I found this to be super interesting as it examined common lyrical elements, such as chants and spelling, CLICHES because we know how common those are!!, as well as analyzed the tempo and duration of each song (based on available Spotify versions) to understand how these schools are musically propelled to victory. 
+
+## Part One - Replicating a Table
+
+```{r}
+# Load the knitr package
+library(knitr)
+
+# Load the here package
+library(here)
+
+# Use include_graphics to display the PNG image with correct path using here()
+
+include_graphics(here("presentation-exercise", "fight-songs", "presentation-results-exercise", "presentation-results-plots", "Graph_of_Fight_Songs.png"))
+
+```
+Above is the graph that I attempted to recreate from the published article; here: https://projects.fivethirtyeight.com/college-fight-song-lyrics/
+
+I asked AI to create a four quadrant graph with an x-axis that represents duration and a y axis that represents the beats per minute of each school's reported data. I told the model that I had the .csv raw data. I also specified that the dash lines that divide it into four quadrants represents the corresponding for averages for duration and beats per minute. Additionally, the prompt included a specific quadrant text label.
+
+```{r}
+# Load and install required libraries
+library(ggplot2)
+install.packages("here")
+library(here)
+library(dplyr)
+library(ggrepel)  # Load the ggrepel package
+
+# Set the correct relative path to the CSV file inside the 'fight-songs' subfolder
+data <- read.csv(here("presentation-exercise", "fight-songs", "fight-songs.csv"))
+
+```
+
+I was able to download the original data. I recalculated the average valuesfor duration and BPM. I knew this was an important first step as these values are displayed as the quadrant boundaries on both the x and y axes.
+
+```{r}
+# Calculate average values for duration and BPM
+avg_duration <- mean(data$sec_duration, na.rm = TRUE)
+avg_bpm <- mean(data$bpm, na.rm = TRUE)
+```
+
+Next, the four-quadrant plot was created. Many iterations of this code was requested from the AI because of the difficulties with school labels overlapping with the quadrant labels. This is something that the original data was able to avoid by creating an interactive overlay so labels are only shown if one's cursor selects it. This is outside my current skills, but I am interested in whether this can be done within R or requires additional tech/platforms/extensions etc. I ended up switching the orientation of the labels to try to accomodate the right side.
+
+```{r}
+# Create the four-quadrant plot 
+plot = ggplot(data, aes(x = sec_duration, y = bpm, label = school)) +  # Adjusted column names
+  geom_point(aes(color = school), size = 3, alpha = 0.7) +  # Add alpha for transparency, points for each university team
+  geom_hline(yintercept = avg_bpm, linetype = "dashed", color = "lightgrey") +  # Light grey horizontal line for average BPM
+  geom_vline(xintercept = avg_duration, linetype = "dashed", color = "lightgrey") +  # Light grey vertical line for average duration
+  geom_text_repel(aes(label = school), size = 3, max.overlaps = Inf, box.padding = 0.5, force = 10) +  # Repel text labels with more space
+  labs(
+    title = "Fight Songs Quadrant Plot",
+    x = "Song Duration (seconds)",
+    y = "Beats Per Minute (BPM)"
+  ) +
+  theme_minimal(base_size = 14) +  # Increase base font size for better readability
+  theme(
+    legend.position = "none",  # Remove legend for cleaner look
+    plot.margin = margin(10, 10, 10, 10),  # Increase margins to avoid cutting off labels
+    plot.title = element_text(hjust = 0.5)  # Center the title
+  ) +
+  # Annotate the quadrant labels vertically in the corners, adjusted laterally
+  # Top-left quadrant ("Fast and Short") - moved up a bit
+  annotate("text", x = avg_duration * 0.15, y = 120, label = "Fast and Short", color = "blue", size = 4, angle = 0, fontface = "bold") +  # Moved up slightly
+  # Top-right quadrant ("Fast but Long") - moved slightly further right
+  annotate("text", x = avg_duration * 2.3, y = avg_bpm * 1.1, label = "Fast but Long", color = "blue", size = 4, angle = 90, fontface = "bold") +  # Bolded text
+  # Bottom-left quadrant ("Short but Slow")
+  annotate("text", x = avg_duration * 0.05, y = avg_bpm * 0.7, label = "Short but Slow", color = "blue", size = 4, angle = 90, fontface = "bold") +  # Bolded text
+  # Bottom-right quadrant ("Slow and Long")
+  annotate("text", x = avg_duration * 1.95, y = avg_bpm * 0.7, label = "Slow and Long", color = "blue", size = 4, angle = 90, fontface = "bold")  # Bolded text
+```
+
+
+Here is the quadrant plot I was able to generate below.
+```{r}
+# Print the plot
+print(plot)
+
+# Save the plot into the "fight-songs" folder with a white background
+ggsave("./presentation-results-exercise/presentation-results-plots/fight_song_quadrant_plot.png", plot = plot, width = 10, height = 8, dpi = 300, bg = "white")
+
+```
+
+I ended up putting my final code back into AI to see what prompt it thinks would generate my final version. This was the output:
+
+AI Prompt:
+Generate a Quarto document that does the following:
+Introduction:
+Write an introduction about college fight songs, explaining how they are an integral part of the college experience and how the best ones are celebrated while the less memorable ones fade into obscurity.
+Include a section about an analysis of 65 school fight songs, collected from the Power Five conferences (ACC, Big Ten, Big 12, Pac-12, SEC) and Notre Dame. The analysis includes an exploration of common lyrical elements (such as chants and spelling) and an examination of the tempo and duration of the songs (based on Spotify data).
+Graph Section:
+Display a PNG image, titled “Graph of Fight Songs,” that is located in a specific path (presentation-results-plots folder).
+Use the knitr package to include the image with the correct file path using the here() function.
+Data Loading and Preparation:
+Load necessary libraries (e.g., ggplot2, dplyr, ggrepel, here).
+Load the data from a CSV file that is located in the presentation-exercise/fight-songs folder, using the read.csv() function and the here() package for path management.
+Analysis:
+Calculate the average duration and beats per minute (BPM) for the songs.
+Use the calculated averages for plotting the data, showing the boundaries for the quadrants on the x and y axes.
+Quadrant Plot Creation:
+Create a four-quadrant plot using ggplot2. The plot should display each song with its duration (x-axis) and BPM (y-axis).
+Include repelling text labels to avoid overlap.
+Annotate the quadrants (e.g., "Fast and Short," "Fast but Long," etc.) with text labels.
+Add dashed lines for the average BPM and duration.
+Saving the Plot:
+Save the generated plot in the presentation-results-exercise/presentation-results-plots folder with a white background.
+Make sure the explanations and commentary about the analysis are clearly written for non-technical readers.
+
+I found feeding back the code to AI and asking what would have been efficient in generating the output is an interesting loop to pursue.
+
+## Part Two - Creating a High-Quality Table
+
+I am genuinely proud of my table. I started with a general table output via a AI template structure from the following prompt: Use the same dataset you used for the graph (or a subset) to create a table that is representative of the data set. Make sure it includes meaningful metrics like song duration and beats per minute (BPM) and BPM Comparison to correspond with the quadrants.
+
+The orignal table had column headings that matched the raw data's table's headings. I renamed each to best display the data more professionally. 
+```{r}
+# Rename the columns in the summary_table dataframe
+colnames(summary_table) <- c("School", 
+                             "Duration (Seconds)", 
+                             "Beats Per Minute", 
+                             "Average Duration (Seconds)", 
+                             "Average Beats Per Minute", 
+                             "BPM Comparison (Quadrants)", 
+                             "Duration (Seconds) Relative to Mean Duration", 
+                             "BPM Difference from Mean")
+
+# Create the table with kable and style it
+summary_table %>%
+  kable("html", caption = "Summary of Fight Songs with Differences from the Mean") %>%
+  kable_styling(full_width = TRUE, position = "center", font_size = 12) %>%
+  column_spec(1, bold = TRUE, color = "white", background = "#0073e6") %>%  # Header row with blue background
+  column_spec(2, color = "darkblue") %>%
+  column_spec(3, color = "darkred") %>%
+  column_spec(4, color = "green") %>%  # Column for average duration
+  column_spec(5, color = "orange") %>%  # Column for average bpm
+  column_spec(6, color = "purple") %>%  # Column for bpm comparison
+  column_spec(7, color = "darkgreen") %>%  # Column for duration difference
+  column_spec(8, color = "brown") %>%  # Column for bpm difference
+  # Adjusted header row to reflect 8 columns and updated headings
+  add_header_above(c("Fight Song Details" = 4, "Comparison" = 4)) %>%  # Two groups: 4 columns for details, 4 for comparison
+  row_spec(0, bold = TRUE, background = "#d9d9d9") %>%  # Bold header with light grey background
+  row_spec(1:nrow(summary_table), color = "black", background = ifelse(summary_table$bpm_comparison == "Above Average", "#e6f7ff", "#ffe6e6")) %>%  # Soft blue for above average and soft red for below
+  footnote(general = "The above table summarizes key metrics of the fight songs, including their duration, BPM, and how they compare to the average-- both categorically and quanitatively.", 
+           general_title = "Footnote", 
+           footnote_as_chunk = TRUE)
+print(summary_table)
+```
