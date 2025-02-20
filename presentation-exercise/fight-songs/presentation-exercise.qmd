@@ -173,4 +173,79 @@ summary_table %>%
 
 ```
 
+Let's start over!!!! 
 
+Trying again!!!! 
+
+I tried again on this exercise after reading how other students prompted their AI using an image upload of the orginal graph. I ended up prompting the AI model to stylistically copy the uploaded image. I simultaneously uploaded the above code and noted in the prompt that the code was partially correct but did not appropriate match the style. Below is my updated output, which was much closer in style to the original!
+
+
+```{r fig.align="center", echo=FALSE}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(ggrepel)
+
+# Load data
+data <- read.csv(here::here("presentation-exercise", "fight-songs", "fight-songs.csv"))
+
+# Calculate averages
+avg_duration <- mean(data$sec_duration, na.rm = TRUE)
+avg_bpm <- mean(data$bpm, na.rm = TRUE)
+
+# Create updated quadrant plot
+plot2 <- ggplot(data, aes(x = sec_duration, y = bpm)) +
+  geom_point(aes(color = school == "Georgia"), size = 4, alpha = 0.8) +  # Highlight Georgia
+  geom_hline(yintercept = avg_bpm, linetype = "dashed", color = "#A9A9A9") +  # Grey dashed lines
+  geom_vline(xintercept = avg_duration, linetype = "dashed", color = "#A9A9A9") +
+  scale_x_continuous(limits = c(0, 180), breaks = seq(0, 180, by = 20)) +  # X-axis: 0-180 by 20
+  scale_y_continuous(limits = c(0, 200), breaks = seq(0, 200, by = 60)) +  # Y-axis: 0-200 by 60
+  scale_color_manual(values = c("black", "#E50000")) +  # Red for Georgia, black for others
+  labs(
+    title = "Fight Songs Quadrant Analysis",
+    x = "Song Duration (seconds)",
+    y = "Beats Per Minute (BPM)"
+  ) +
+  theme_fivethirtyeight() +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(hjust = 0.5)
+  )
+
+# Save updated plot
+ggsave("./presentation-results-exercise/presentation-results-plots/fight_song_quadrant_plot.png", 
+       plot = plot, width = 10, height = 8, dpi = 300, bg = "white")
+
+# Save the updated plot
+ggsave("fight_song_quadrant_plot.png", plot = plot, width = 10, height = 8, dpi = 300, bg = "white")
+
+# Save plot
+ggsave("./presentation-results-exercise/presentation-results-plots/fight_song_quadrant_plot.png", plot = plot, width = 10, height = 8, dpi = 300, bg = "white")
+
+# Create summary table
+summary_table <- data %>%
+  mutate(
+    bpm_comparison = ifelse(bpm > avg_bpm, "Above Average", "Below Average"),
+    duration_diff = sec_duration - avg_duration,
+    bpm_diff = bpm - avg_bpm
+  ) %>%
+  select(school, bpm_comparison, duration_diff, bpm_diff)
+
+colnames(summary_table) <- c("School", "BPM Comparison", "Diff from Mean Duration", "Diff from Mean BPM")
+
+# Styled table
+styled_table <- summary_table %>%
+  kable("html", caption = "Summary of Fight Songs") %>%
+  kable_styling(full_width = TRUE, position = "center", bootstrap_options = c("striped", "hover")) %>%
+  column_spec(1, bold = TRUE, background = "#0073e6", color = "white") %>%
+  row_spec(0, bold = TRUE, background = "#d9d9d9")
+
+# Print outputs
+plot2
+styled_table
+
+
+include_graphics(here("presentation-exercise", "fight-songs", "presentation-results-exercise", "presentation-results-plots", "Graph_of_Fight_Songs.png"))
+```
+I included the original here to compare with the second replication above. 
