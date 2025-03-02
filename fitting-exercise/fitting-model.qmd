@@ -1,0 +1,356 @@
+---
+title: "Fitting Model"
+author: "Hope Grismer"
+date: "2025-02-28"
+output: html_document
+---
+
+Prompts  - "Write code to load the data into R. Then write code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis. Stratify by dose (e.g., use a different color for each dose, or facets).
+
+Write code that keeps only observations with OCC = 1.
+
+Write code to exclude the observations with TIME = 0, then compute the sum of the DV variable for each individual using dplyr::summarize(). Call this variable Y. The result from this step should be a data frame/tibble of size 120 x 2, one column for the ID one for the variable Y. Next, create a data frame that contains only the observations where TIME == 0. This should be a tibble of size 120 x 17. Finally, use the appropriate join function to combine those two data frames, to get a data frame of size 120 x 18.
+
+Write code that converts RACE and SEX to factor variables and keeps only these variables: Y,DOSE,AGE,SEX,RACE,WT,HT"
+
+"Make some useful summary tables.
+Show some scatterplots or boxplots between the main outcome of interest (total drug, Y) and other predictors.
+Plot the distributions of your variables to make sure they all make sense.
+Look at some pair/correlation plots."
+
+```{r}
+# Install and load necessary packages
+library(tidyverse)
+# Or manually specify a mirror
+options(repos = c(CRAN = "https://cloud.r-project.org/"))
+# Now try installing the package
+install.packages("GGally")
+library(GGally)
+library(skimr)
+
+# Load the Mavoglurant_A2121_nmpk.csv data
+df <- read.csv("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/fitting-exercise/Mavoglurant_A2121_nmpk.csv")
+
+# Initial exploration
+glimpse(df)
+skim(df)
+
+# Plot the outcome variable DV (drug concentration) as a function of time, stratified by DOSE and using ID as a grouping factor
+p <- df %>%
+  ggplot(aes(x = TIME , y = DV, group = ID, color = as.factor(DOSE))) +  # DOSE is used for stratification by dose
+  geom_line(alpha = 0.6) +
+  labs(
+    x = "Time (hours)", 
+    y = "Drug Concentration (ng/mL)", 
+    color = "Dose (mg)"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9)
+  )
+print(p)
+
+# Keep only observations where OCC == 1 (remove OCC == 2)
+df_filtered <- df %>%
+  filter(OCC == 1)
+
+# Compute total drug amount for each individual (sum of DV values), excluding TIME == 0
+drug_sums <- df_filtered %>%
+  filter(TIME != 0) %>%
+  group_by(ID) %>%
+  summarize(Y = sum(DV, na.rm = TRUE))
+
+# Create a data frame with only observations where TIME == 0 (dosing information)
+dose_info <- df_filtered %>%
+  filter(TIME == 0)
+
+# Join the two data frames: one with drug sums and the other with dosing info
+df_final <- left_join(dose_info, drug_sums, by = "ID")
+
+# Select only relevant variables and convert RACE and SEX to factors
+df_cleaned <- df_final %>%
+  select(Y, DOSE, AGE, SEX, RACE, WT, HT) %>%
+  mutate(
+    SEX = as.factor(SEX),
+    RACE = as.factor(RACE)
+  )
+
+# Final check of the cleaned data
+glimpse(df_cleaned)
+skim(df_cleaned)
+
+# Summary table by DOSE
+summary_table <- df_cleaned %>%
+  group_by(DOSE) %>%
+  summarize(
+    Mean_Y = mean(Y, na.rm = TRUE),
+    Median_Y = median(Y, na.rm = TRUE),
+    SD_Y = sd(Y, na.rm = TRUE),
+    Count = n()
+  )
+print(summary_table)
+
+# Boxplots of Y vs predictors with improved labels
+ggplot(df_cleaned, aes(x = as.factor(DOSE), y = Y, fill = as.factor(DOSE))) +
+  geom_boxplot() +
+  labs(
+    x = "Dose (mg)", 
+    y = "Total Drug (Mavoglurant) - Concentration (ng/mL)", 
+    fill = "Dose (mg)"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9)
+  )
+
+ggplot(df_cleaned, aes(x = as.factor(SEX), y = Y, fill = as.factor(SEX))) +
+  geom_boxplot() +
+  labs(
+    x = "Sex", 
+    y = "Total Drug (Mavoglurant) - Concentration (ng/mL)", 
+    fill = "Sex"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold"),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 9)
+  )
+
+# Scatterplots with regression lines
+scatter_1 <- ggplot(df_cleaned, aes(x = AGE, y = Y)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(
+    x = "Age (years)", 
+    y = "Total Drug (Y) - Concentration (ng/mL)"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold")
+  )
+print(scatter_1)
+
+scatter_2 <- ggplot(df_cleaned, aes(x = WT, y = Y)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(
+    x = "Weight (kg)", 
+    y = "Total Drug (Mavoglurant) - Concentration (ng/mL)"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold")
+  )
+print(scatter_2)
+
+# Distribution plots
+ggplot(df_cleaned, aes(x = Y)) +
+  geom_histogram(bins = 30, fill = "blue", alpha = 0.7) +
+  labs(
+    x = "Total Drug (Mavoglurant) - Concentration (ng/mL)", 
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold")
+  )
+
+ggplot(df_cleaned, aes(x = AGE)) +
+  geom_histogram(bins = 30, fill = "green", alpha = 0.7) +
+  labs(
+    x = "Age (years)", 
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold")
+  )
+
+# Correlation plot with adjusted axis labels
+cor_plot <- ggpairs(df_cleaned %>% select(Y, DOSE, AGE, WT)) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_text(size = 12, face = "bold"),
+    axis.title.y = element_text(size = 12, face = "bold")
+  )
+print(cor_plot)
+
+```
+Prompts - "Fit a linear model to the continuous outcome (Y) using the main predictor of interest, which we’ll assume here to be DOSE.
+Fit a linear model to the continuous outcome (Y) using all predictors.
+For both models, compute RMSE and R-squared and print them."
+
+"Fit a logistic model to the categorical/binary outcome (SEX) using the main predictor of interest, which we’ll again assume here to be DOSE.
+Fit a logistic model to SEX using all predictors.
+For both models, compute accuracy and ROC-AUC and print them."
+```{r}
+
+# Install pROC package 
+install.packages("pROC")
+# Load the pROC package
+library(pROC)
+# Load the necessary package
+library(tidymodels)
+
+# Load the data
+df <- read.csv("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/fitting-exercise/Mavoglurant_A2121_nmpk.csv")
+
+# Data Preprocessing - Remove OCC = 2, and convert necessary columns to factors
+df_cleaned <- df %>%
+  filter(OCC == 1) %>%
+  mutate(
+    SEX = as.factor(SEX),
+    RACE = as.factor(RACE)
+  )
+
+# Keep only necessary variables: WT (weight), DOSE, SEX, AGE, RACE, WT, HT
+df_cleaned <- df_cleaned %>%
+  select(WT, DOSE, SEX, AGE, RACE, HT)
+
+# 1. Fit a linear model to the continuous outcome (WT) using the main predictor DOSE
+lm_dose_spec <- linear_reg() %>%
+  set_engine("lm")
+
+lm_dose_recipe <- recipe(WT ~ DOSE, data = df_cleaned)
+
+lm_dose_workflow <- workflow() %>%
+  add_recipe(lm_dose_recipe) %>%
+  add_model(lm_dose_spec)
+
+lm_dose_fit <- lm_dose_workflow %>%
+  fit(data = df_cleaned)
+
+# 2. Fit a linear model to the continuous outcome (WT) using all predictors
+lm_all_spec <- linear_reg() %>%
+  set_engine("lm")
+
+lm_all_recipe <- recipe(WT ~ DOSE + AGE + SEX + RACE + HT, data = df_cleaned)
+
+lm_all_workflow <- workflow() %>%
+  add_recipe(lm_all_recipe) %>%
+  add_model(lm_all_spec)
+
+lm_all_fit <- lm_all_workflow %>%
+  fit(data = df_cleaned)
+
+# 3. Compute RMSE and R-squared for both linear models
+
+# Extract predictions from the model predictions
+lm_dose_pred <- predict(lm_dose_fit, df_cleaned) %>% pull(.pred)
+lm_all_pred <- predict(lm_all_fit, df_cleaned) %>% pull(.pred)
+
+# Calculate RMSE and R-squared for both models using yardstick functions
+lm_dose_rmse <- lm_dose_pred %>%
+  tibble(pred = ., truth = df_cleaned$WT) %>%
+  rmse(truth = truth, estimate = pred)
+
+lm_all_rmse <- lm_all_pred %>%
+  tibble(pred = ., truth = df_cleaned$WT) %>%
+  rmse(truth = truth, estimate = pred)
+
+lm_dose_r2 <- lm_dose_pred %>%
+  tibble(pred = ., truth = df_cleaned$WT) %>%
+  rsq(truth = truth, estimate = pred)
+
+lm_all_r2 <- lm_all_pred %>%
+  tibble(pred = ., truth = df_cleaned$WT) %>%
+  rsq(truth = truth, estimate = pred)
+
+# Print RMSE and R-squared
+cat("Linear model (DOSE):\n")
+cat("RMSE:", lm_dose_rmse$.estimate, "\n")
+cat("R-squared:", lm_dose_r2$.estimate, "\n\n")
+
+cat("Linear model (all predictors):\n")
+cat("RMSE:", lm_all_rmse$.estimate, "\n")
+cat("R-squared:", lm_all_r2$.estimate, "\n\n")
+
+
+# 4. Fit a logistic model to the categorical/binary outcome (SEX) using the main predictor DOSE
+logit_dose_spec <- logistic_reg() %>%
+  set_engine("glm")
+
+logit_dose_recipe <- recipe(SEX ~ DOSE, data = df_cleaned)
+
+logit_dose_workflow <- workflow() %>%
+  add_recipe(logit_dose_recipe) %>%
+  add_model(logit_dose_spec)
+
+logit_dose_fit <- logit_dose_workflow %>%
+  fit(data = df_cleaned)
+
+# 5. Fit a logistic model to SEX using all predictors
+logit_all_spec <- logistic_reg() %>%
+  set_engine("glm")
+
+logit_all_recipe <- recipe(SEX ~ DOSE + AGE + RACE + HT, data = df_cleaned)
+
+logit_all_workflow <- workflow() %>%
+  add_recipe(logit_all_recipe) %>%
+  add_model(logit_all_spec)
+
+logit_all_fit <- logit_all_workflow %>%
+  fit(data = df_cleaned)
+
+# 6. Compute accuracy and ROC-AUC for both logistic models
+logit_dose_pred <- predict(logit_dose_fit, df_cleaned, type = "prob")
+logit_all_pred <- predict(logit_all_fit, df_cleaned, type = "prob")
+
+# Calculate accuracy for both models
+logit_dose_pred_class <- ifelse(logit_dose_pred$.pred_1 > 0.5, 1, 0)
+logit_all_pred_class <- ifelse(logit_all_pred$.pred_1 > 0.5, 1, 0)
+
+logit_dose_accuracy <- mean(logit_dose_pred_class == df_cleaned$SEX)
+logit_all_accuracy <- mean(logit_all_pred_class == df_cleaned$SEX)
+
+# Calculate ROC-AUC for both models
+logit_dose_roc <- roc(df_cleaned$SEX, logit_dose_pred$.pred_1)
+logit_all_roc <- roc(df_cleaned$SEX, logit_all_pred$.pred_1)
+
+# Print accuracy and ROC-AUC
+cat("Logistic model (DOSE):\n")
+cat("Accuracy:", logit_dose_accuracy, "\n")
+cat("ROC-AUC:", auc(logit_dose_roc), "\n\n")
+
+cat("Logistic model (all predictors):\n")
+cat("Accuracy:", logit_all_accuracy, "\n")
+cat("ROC-AUC:", auc(logit_all_roc), "\n\n")
+
+```
+
+Linear model (DOSE as the main predictor):
+RMSE (Root Mean Squared Error): 12.36
+This indicates that the model’s predictions are, on average, about 12.36 units away from the actual values of Y (total drug concentration). A higher RMSE suggests that the model is not doing a very good job of predicting the outcome.
+R-squared: 0.0100
+This value is very low, meaning that the model explains only about 1% of the variance in the outcome (Y). This suggests that DOSE alone is not a strong predictor of the total drug concentration (Y). A very low R-squared indicates that other factors likely have more influence on the outcome.
+
+Linear model (all predictors):
+RMSE: 8.68
+The RMSE has decreased significantly compared to the previous model, indicating an improvement in the model's predictive performance when considering all the predictors. The model is now, on average, about 8.68 units away from the actual values of Y.
+R-squared: 0.5114
+This is a substantial improvement over the previous model, suggesting that the model now explains about 51% of the variance in the total drug concentration (Y). The inclusion of additional predictors has clearly helped the model improve its accuracy and explanation of the variability in Y.
+
+Logistic model (DOSE as the main predictor):
+Accuracy: 0.8643
+This means the model correctly predicted SEX (male or female) about 86.43% of the time when using DOSE as the only predictor. This is a relatively high accuracy, suggesting that DOSE has a reasonable relationship with SEX, but accuracy alone doesn’t tell the full story.
+ROC-AUC: 0.5854
+The ROC-AUC value is relatively low (just above 0.5), suggesting that the model does not do a very good job at distinguishing between the two classes (SEX = male or female) based on DOSE alone. A value closer to 1 would indicate excellent discrimination, while a value around 0.5 suggests random guessing.
+
+Logistic model (all predictors):
+Accuracy: 0.8390
+This accuracy is still quite good, though slightly lower than the model with DOSE alone. It means the model is still fairly reliable at predicting SEX based on the predictors.
+ROC-AUC: 0.9742
+This is a very high value, indicating that the logistic model with all predictors does an excellent job at distinguishing between the two classes (SEX = male or female). This suggests that the combination of predictors (including DOSE, AGE, etc.) is highly effective at discriminating between male and female participants.
+

@@ -20,6 +20,8 @@ website:
             file: cdcdata-exercise/statistical-analysis-cdcdata-exercise.qmd
           - text: "Presentation-Exercise"
             file: presentation-exercise/fight-songs/presentation-exercise.qmd
+          - text: "Fitting Exercise"
+            file: fitting-exercise/fitting-model.qmd
     right:
       - icon: github 
         href: https://github.com/hopegrismer/hopegrismer-MADA-portfolio      
