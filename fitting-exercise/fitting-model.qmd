@@ -432,7 +432,8 @@ cleaned_data <- data %>%
 dim(cleaned_data)
 ```
 
-[**What happened in this step above:**]{.underline}
+[**What happened in this step above (steps noted for my benefit/future
+benefit):**]{.underline}
 
 **select(DV, DOSE, AGE, SEX, WT, HT)**
 
@@ -479,7 +480,8 @@ dim(train_data) # ~90 rows
 dim(test_data)  # ~30 rows
 ```
 
-[**What happened in this step above:**]{.underline}
+[**What happened in this step above (steps noted for my benefit/future
+benefit):**]{.underline}
 
 -   **set.seed(rngseed)**
 
@@ -532,7 +534,8 @@ fit2 <- model_spec2 %>%
 
 ```
 
-[**What happened in this step above:**]{.underline}
+[**What happened in this step above (steps noted for my benefit/future
+benefit):**]{.underline}
 
 -   **linear_reg()**
 
@@ -652,7 +655,8 @@ null_rmse$.estimate
     almost identical RMSE values means that adding more predictors **is
     not adding meaningful information.**
 
-[**What happened in this step above:**]{.underline}
+[**What happened in this step above (steps noted for my benefit/future
+benefit):**]{.underline}
 
 -   The null model predicts the **mean** of `Y` for every observation.
 
@@ -733,7 +737,8 @@ collect_metrics(cv_results2)
     even though predictive power is weak, the model generalizes well
     across different subsets of the data.
 
-[**What happened in this step above:**]{.underline}
+[**What happened in this step above (steps noted for my benefit/future
+benefit):**]{.underline}
 
 -   **vfold_cv(train_data, v = 10)**
 

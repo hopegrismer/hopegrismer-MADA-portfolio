@@ -212,7 +212,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Prompts - “Write code to load the data into R. Then write code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis. Stratify by dose (e.g., use a different color for each dose, or facets).</p>
+<section id="fitting-exercise" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-exercise">FITTING EXERCISE !!!!</h2>
+</section>
+<section id="prompt-1" class="level2">
+<h2 class="anchored" data-anchor-id="prompt-1">Prompt #1</h2>
+<p>“Write code to load the data into R. Then write code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis. Stratify by dose (e.g., use a different color for each dose, or facets).</p>
 <p>Write code that keeps only observations with OCC = 1.</p>
 <p>Write code to exclude the observations with TIME = 0, then compute the sum of the DV variable for each individual using dplyr::summarize(). Call this variable Y. The result from this step should be a data frame/tibble of size 120 x 2, one column for the ID one for the variable Y. Next, create a data frame that contains only the observations where TIME == 0. This should be a tibble of size 120 x 17. Finally, use the appropriate join function to combine those two data frames, to get a data frame of size 120 x 18.</p>
 <p>Write code that converts RACE and SEX to factor variables and keeps only these variables: Y,DOSE,AGE,SEX,RACE,WT,HT”</p>
@@ -239,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//RtmppxgvL6/downloaded_packages</code></pre>
+    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmp8y31m7/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -973,6 +978,9 @@ $ HT   &lt;dbl&gt; 1.769997, 1.759850, 1.809847, 1.649993, 1.560052, 1.829862, 1
 </div>
 </div>
 </div>
+</section>
+<section id="prompt-2" class="level2">
+<h2 class="anchored" data-anchor-id="prompt-2">Prompt #2</h2>
 <p>Prompts - “Fit a linear model to the continuous outcome (Y) using the main predictor of interest, which we’ll assume here to be DOSE. Fit a linear model to the continuous outcome (Y) using all predictors. For both models, compute RMSE and R-squared and print them.”</p>
 <p>“Fit a logistic model to the categorical/binary outcome (SEX) using the main predictor of interest, which we’ll again assume here to be DOSE. Fit a logistic model to SEX using all predictors. For both models, compute accuracy and ROC-AUC and print them.”</p>
 <div class="cell">
@@ -981,7 +989,7 @@ $ HT   &lt;dbl&gt; 1.769997, 1.759850, 1.809847, 1.649993, 1.560052, 1.829862, 1
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//RtmppxgvL6/downloaded_packages</code></pre>
+    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmp8y31m7/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pROC package</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1184,12 +1192,439 @@ Setting direction: controls &gt; cases</code></pre>
 <pre><code>ROC-AUC: 0.9741739 </code></pre>
 </div>
 </div>
+</section>
+<section id="what-do-all-the-models-mean-above" class="level2">
+<h2 class="anchored" data-anchor-id="what-do-all-the-models-mean-above">What Do All the Models Mean Above</h2>
 <p>Linear model (DOSE as the main predictor): RMSE (Root Mean Squared Error): 12.36 This indicates that the model’s predictions are, on average, about 12.36 units away from the actual values of Y (total drug concentration). A higher RMSE suggests that the model is not doing a very good job of predicting the outcome. R-squared: 0.0100 This value is very low, meaning that the model explains only about 1% of the variance in the outcome (Y). This suggests that DOSE alone is not a strong predictor of the total drug concentration (Y). A very low R-squared indicates that other factors likely have more influence on the outcome.</p>
 <p>Linear model (all predictors): RMSE: 8.68 The RMSE has decreased significantly compared to the previous model, indicating an improvement in the model’s predictive performance when considering all the predictors. The model is now, on average, about 8.68 units away from the actual values of Y. R-squared: 0.5114 This is a substantial improvement over the previous model, suggesting that the model now explains about 51% of the variance in the total drug concentration (Y). The inclusion of additional predictors has clearly helped the model improve its accuracy and explanation of the variability in Y.</p>
 <p>Logistic model (DOSE as the main predictor): Accuracy: 0.8643 This means the model correctly predicted SEX (male or female) about 86.43% of the time when using DOSE as the only predictor. This is a relatively high accuracy, suggesting that DOSE has a reasonable relationship with SEX, but accuracy alone doesn’t tell the full story. ROC-AUC: 0.5854 The ROC-AUC value is relatively low (just above 0.5), suggesting that the model does not do a very good job at distinguishing between the two classes (SEX = male or female) based on DOSE alone. A value closer to 1 would indicate excellent discrimination, while a value around 0.5 suggests random guessing.</p>
 <p>Logistic model (all predictors): Accuracy: 0.8390 This accuracy is still quite good, though slightly lower than the model with DOSE alone. It means the model is still fairly reliable at predicting SEX based on the predictors. ROC-AUC: 0.9742 This is a very high value, indicating that the logistic model with all predictors does an excellent job at distinguishing between the two classes (SEX = male or female). This suggests that the combination of predictors (including DOSE, AGE, etc.) is highly effective at discriminating between male and female participants.</p>
+</section>
+<section id="exercise-10" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-10">EXERCISE 10 !!!</h2>
+</section>
+<section id="data-wrangling-and-setup" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling-and-setup">1. Data Wrangling and Setup</h2>
+<ul>
+<li><p>Remove RACE from the dataset.</p></li>
+<li><p>Keep only Y, DOSE, AGE, SEX, WT, and HT.</p></li>
+<li><p>Ensure there are 120 rows left.</p></li>
+<li><p>Set the random seed at the beginning (rngseed = 1234).</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required libraries</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rsample)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>rngseed <span class="ot">&lt;-</span> <span class="dv">1234</span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(rngseed)</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"fitting-exercise"</span>, <span class="st">"Mavoglurant_A2121_nmpk.csv"</span>))</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove RACE and keep relevant variables</span></span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>cleaned_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(DV, DOSE, AGE, SEX, WT, HT) <span class="sc">%&gt;%</span></span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">na.omit</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Y =</span> DV) <span class="co"># Rename DV to Y for consistency with the instructions</span></span>
+<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Check dimensions (should be 120 rows, 6 columns)</span></span>
+<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(cleaned_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2678    6</code></pre>
+</div>
+</div>
+<p><u><strong>What happened in this step above:</strong></u></p>
+<p><strong>select(DV, DOSE, AGE, SEX, WT, HT)</strong></p>
+<ul>
+<li><p>This selects only the relevant variables from the dataset.</p></li>
+<li><p><code>DV</code>&nbsp;is the dependent (outcome) variable we’re trying to predict.</p></li>
+<li><p>The other five (<code>DOSE</code>,&nbsp;<code>AGE</code>,&nbsp;<code>SEX</code>,&nbsp;<code>WT</code>,&nbsp;<code>HT</code>) are predictors (independent variables).</p></li>
+</ul>
+<!-- -->
+<ul>
+<li><p><strong>na.omit()</strong></p>
+<ul>
+<li><p>This removes rows with any missing (<code>NA</code>) values.</p></li>
+<li><p>Missing data can mess up model fitting, so it’s common to drop them unless you plan to impute (fill in) the missing values.</p></li>
+</ul></li>
+<li><p><strong>rename(Y = DV)</strong></p>
+<ul>
+<li><p>Renames the&nbsp;<code>DV</code>&nbsp;column to&nbsp;<code>Y</code>&nbsp;for consistency with the instructions.</p></li>
+<li><p>This way, the outcome variable is consistently called&nbsp;<code>Y</code>&nbsp;throughout the analysis.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="train-vs.-test-data-split" class="level2">
+<h2 class="anchored" data-anchor-id="train-vs.-test-data-split">2. Train vs.&nbsp;Test Data Split</h2>
+<ul>
+<li><p>Use initial_split() from rsample (75% train, 25% test).</p></li>
+<li><p>Confirm the split size matches expectations (~90 training, ~30 testing).</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split into 75% training and 25% testing</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(rngseed) <span class="co"># Reset seed before sampling</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(cleaned_data, <span class="at">prop =</span> <span class="fl">0.75</span>)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Check split sizes</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(train_data) <span class="co"># ~90 rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2008    6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(test_data)  <span class="co"># ~30 rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 670   6</code></pre>
+</div>
+</div>
+<p><u><strong>What happened in this step above:</strong></u></p>
+<ul>
+<li><p><strong>set.seed(rngseed)</strong></p>
+<ul>
+<li><p>Ensures that the random split is reproducible.</p></li>
+<li><p>If you set the same seed and run the code again, you’ll get the exact same split — useful for debugging and reproducibility.</p></li>
+</ul></li>
+<li><p><strong>initial_split(cleaned_data, prop = 0.75)</strong></p>
+<ul>
+<li><p>Randomly splits the data into:</p>
+<ul>
+<li><p>75% training data (used to fit the model)</p></li>
+<li><p>25% test data (held back to evaluate the model later)</p></li>
+</ul></li>
+<li><p>This mimics a real-world scenario where you’d train a model on existing data and test it on unseen data.</p></li>
+</ul></li>
+<li><p><strong>training(data_split)</strong>&nbsp;and&nbsp;<strong>testing(data_split)</strong></p>
+<ul>
+<li>Extracts the training and test datasets from the split.</li>
+</ul></li>
+</ul>
+</section>
+<section id="modeling-fitting" class="level2">
+<h2 class="anchored" data-anchor-id="modeling-fitting">3. Modeling Fitting</h2>
+<ul>
+<li><p>Fit two linear models using&nbsp;<code>tidymodels::linear_reg()</code>:</p>
+<ul>
+<li><p>Model 1:&nbsp;<code>Y ~ DOSE</code></p></li>
+<li><p>Model 2:&nbsp;<code>Y ~ DOSE + AGE + SEX + WT + HT</code></p></li>
+</ul></li>
+<li><p>Use&nbsp;<code>metric = RMSE</code>.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the model specifications</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>model_spec1 <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>model_spec2 <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the models on the training set</span></span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> model_spec1 <span class="sc">%&gt;%</span></span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Y <span class="sc">~</span> DOSE, <span class="at">data =</span> train_data)</span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> model_spec2 <span class="sc">%&gt;%</span></span>
+<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><u><strong>What happened in this step above:</strong></u></p>
+<ul>
+<li><p><strong>linear_reg()</strong></p>
+<ul>
+<li><p>Creates a linear regression model.</p></li>
+<li><p>Linear regression estimates the relationship between the predictors and the outcome using the formula:</p></li>
+</ul>
+<p>Y=β0+β1⋅DOSE+β2⋅AGE+…+ϵY=β0​+β1​⋅DOSE+β2​⋅AGE+…+ϵ</p>
+<p>where:</p>
+<ul>
+<li><p>YY&nbsp;= predicted outcome</p></li>
+<li><p>β0β0​&nbsp;= intercept</p></li>
+<li><p>β1,β2,…β1​,β2​,…&nbsp;= regression coefficients (how much each predictor contributes)</p></li>
+<li><p>ϵϵ&nbsp;= error term (difference between actual and predicted values)</p></li>
+</ul></li>
+<li><p><strong>set_engine(“lm”)</strong></p>
+<ul>
+<li>Specifies that the model should be fitted using the base R&nbsp;<code>lm()</code>&nbsp;function (ordinary least squares).</li>
+</ul></li>
+<li><p><strong>fit(Y ~ DOSE, data = train_data)</strong></p>
+<ul>
+<li><p><code>Y ~ DOSE</code>&nbsp;fits a simple linear regression with only DOSE as the predictor.</p></li>
+<li><p>The second model adds all predictors (<code>AGE</code>,&nbsp;<code>SEX</code>,&nbsp;<code>WT</code>,&nbsp;<code>HT</code>) for a more complex model.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="model-performance-on-training-set" class="level2">
+<h2 class="anchored" data-anchor-id="model-performance-on-training-set">4. Model Performance on Training Set</h2>
+<ul>
+<li><p>Compute RMSE for both models on training data.</p></li>
+<li><p>Compute RMSE for a null model using&nbsp;<code>tidymodels::null_model()</code>.</p></li>
+<li><p>Compare RMSE values.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on training data</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>pred1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit1, train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(train_data)</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>pred2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit2, train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(train_data)</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute RMSE</span></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>rmse1 <span class="ot">&lt;-</span> <span class="fu">rmse</span>(pred1, <span class="at">truth =</span> Y, <span class="at">estimate =</span> .pred)</span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>rmse2 <span class="ot">&lt;-</span> <span class="fu">rmse</span>(pred2, <span class="at">truth =</span> Y, <span class="at">estimate =</span> .pred)</span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Null model</span></span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>null_mod <span class="ot">&lt;-</span> <span class="fu">null_model</span>(<span class="at">mode =</span> <span class="st">"regression"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"parsnip"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Y <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> train_data)</span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict with null model</span></span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>null_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(null_mod, train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(train_data)</span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a><span class="co"># RMSE for null model</span></span>
+<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>null_rmse <span class="ot">&lt;-</span> <span class="fu">rmse</span>(null_pred, <span class="at">truth =</span> Y, <span class="at">estimate =</span> .pred)</span>
+<span id="cb71-23"><a href="#cb71-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-24"><a href="#cb71-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare RMSE values</span></span>
+<span id="cb71-25"><a href="#cb71-25" aria-hidden="true" tabindex="-1"></a>rmse1<span class="sc">$</span>.estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 222.5618</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>rmse2<span class="sc">$</span>.estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 221.903</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>null_rmse<span class="sc">$</span>.estimate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 228.9459</code></pre>
+</div>
+</div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>RMSE Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Model 1</strong>&nbsp;(Only&nbsp;<code>DOSE</code>&nbsp;as predictor)</td>
+<td><code>222.56</code></td>
+<td>The model using only&nbsp;<code>DOSE</code>&nbsp;explains some variation but is not particularly accurate.</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Model 2</strong>&nbsp;(All predictors)</td>
+<td><code>221.90</code></td>
+<td>Slightly better than Model 1 — adding more predictors improves the model’s accuracy a bit.</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Null Model</strong>&nbsp;(Mean-only)</td>
+<td><code>228.95</code></td>
+<td>This is the benchmark — it reflects the RMSE you’d get if you just predicted the mean outcome for all cases.</td>
+</tr>
+</tbody>
+</table>
+<p><u><strong>Minimal Improvement from Adding Predictors</strong></u></p>
+<ul>
+<li><p>Model 2 (all predictors) has an RMSE of&nbsp;<strong>221.90</strong>, which is only&nbsp;<strong>0.66</strong>&nbsp;lower than Model 1 (DOSE-only) at&nbsp;<strong>222.56</strong>.</p></li>
+<li><p>This small improvement suggests that adding&nbsp;<code>AGE</code>,&nbsp;<code>SEX</code>,&nbsp;<code>WT</code>, and&nbsp;<code>HT</code>&nbsp;does&nbsp;<strong>not meaningfully improve predictive accuracy</strong>&nbsp;beyond using&nbsp;<code>DOSE</code>&nbsp;alone.</p></li>
+<li><p>It implies that&nbsp;<strong>DOSE</strong>&nbsp;is the primary driver of the outcome (<code>Y</code>), and the other predictors might not have a strong relationship with&nbsp;<code>Y</code>&nbsp;or might introduce noise.</p></li>
+</ul>
+<p><u><strong>Predictive Performance Close to Null Model</strong></u></p>
+<ul>
+<li><p>The null model (mean-only) RMSE is&nbsp;<strong>228.95</strong>, which is&nbsp;<strong>just slightly worse</strong>&nbsp;than the fitted models.</p></li>
+<li><p>The fact that the RMSE values for the fitted models are so close to the null model suggests that the predictors&nbsp;<strong>don’t explain much variance</strong>&nbsp;in the outcome.</p></li>
+<li><p>This hints that the relationship between the predictors and&nbsp;<code>Y</code>&nbsp;is either&nbsp;<strong>weak</strong>,&nbsp;<strong>nonlinear</strong>, or&nbsp;<strong>confounded</strong>&nbsp;by unmeasured factors.</p></li>
+</ul>
+<p><u><strong>Model Complexity Does Not Improve Performance</strong></u></p>
+<ul>
+<li>The fact that Model 2 (more complex) and Model 1 (simpler) have almost identical RMSE values means that adding more predictors <strong>is not adding meaningful information.</strong></li>
+</ul>
+<p><u><strong>What happened in this step above:</strong></u></p>
+<ul>
+<li><p>The null model predicts the&nbsp;<strong>mean</strong>&nbsp;of&nbsp;<code>Y</code>&nbsp;for every observation.</p></li>
+<li><p>If the null model’s RMSE is high, it means the data is hard to predict.</p></li>
+<li><p>If the null model’s RMSE is close to the other models, the predictors aren’t adding much value.</p></li>
+</ul>
+<!-- -->
+<ul>
+<li><p><strong>predict(new_data = train_data)</strong></p>
+<ul>
+<li>Predicts&nbsp;<code>Y</code>&nbsp;values on the training data using the model.</li>
+</ul></li>
+<li><p><strong>bind_cols(train_data)</strong></p>
+<ul>
+<li>Merges predicted values with the original data.</li>
+</ul></li>
+<li><p><strong>metrics(truth = Y, estimate = .pred)</strong></p>
+<ul>
+<li><p>Computes performance metrics (like RMSE).</p></li>
+<li><p><strong>RMSE (Root Mean Squared Error)</strong>&nbsp;measures how far the predicted values are from the actual values.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="cross-validation" class="level2">
+<h2 class="anchored" data-anchor-id="cross-validation">5. Cross Validation</h2>
+<ul>
+<li><p>Use 10-fold cross-validation (<code>vfold_cv()</code>).</p></li>
+<li><p>Compute RMSE for both models.</p></li>
+<li><p>Compare with training RMSE values.</p></li>
+<li><p>Look at the standard error for RMSE.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(rngseed) <span class="co"># Reset seed before CV</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 10-fold cross-validation</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>cv_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data, <span class="at">v =</span> <span class="dv">10</span>)</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define workflows</span></span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>wf1 <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(model_spec1) <span class="sc">%&gt;%</span></span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(Y <span class="sc">~</span> DOSE)</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>wf2 <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(model_spec2) <span class="sc">%&gt;%</span></span>
+<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT)</span>
+<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit and evaluate with CV</span></span>
+<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a>cv_results1 <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(</span>
+<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>  wf1,</span>
+<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse)</span>
+<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb77-21"><a href="#cb77-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-22"><a href="#cb77-22" aria-hidden="true" tabindex="-1"></a>cv_results2 <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(</span>
+<span id="cb77-23"><a href="#cb77-23" aria-hidden="true" tabindex="-1"></a>  wf2,</span>
+<span id="cb77-24"><a href="#cb77-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb77-25"><a href="#cb77-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse)</span>
+<span id="cb77-26"><a href="#cb77-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb77-27"><a href="#cb77-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-28"><a href="#cb77-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Get average RMSE and standard error</span></span>
+<span id="cb77-29"><a href="#cb77-29" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(cv_results1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  .metric .estimator  mean     n std_err .config             
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard    222.    10    3.47 Preprocessor1_Model1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(cv_results2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  .metric .estimator  mean     n std_err .config             
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard    222.    10    3.29 Preprocessor1_Model1</code></pre>
+</div>
+</div>
+<p><u><strong>Low Variability in Performance with Cross Validation</strong></u></p>
+<ul>
+<li><p>The standard error from the cross-validation is&nbsp;<strong>~3.47</strong>, indicating that the model’s performance is&nbsp;<strong>consistent</strong>&nbsp;across different data splits.</p></li>
+<li><p>This suggests that the model is&nbsp;<strong>stable</strong>&nbsp;and&nbsp;<strong>not overfitting</strong>&nbsp;— even though predictive power is weak, the model generalizes well across different subsets of the data.</p></li>
+</ul>
+<p><u><strong>What happened in this step above:</strong></u></p>
+<ul>
+<li><p><strong>vfold_cv(train_data, v = 10)</strong></p>
+<ul>
+<li><p>Creates 10 folds for cross-validation.</p></li>
+<li><p>The model is trained on 9 folds and evaluated on the 10th — repeated 10 times.</p></li>
+</ul></li>
+<li><p><strong>fit_resamples()</strong></p>
+<ul>
+<li>Trains the model and computes RMSE for each fold.</li>
+</ul></li>
+<li><p><strong>metric_set(rmse)</strong></p>
+<ul>
+<li>Specifies that RMSE should be computed.</li>
+</ul></li>
+<li><p><strong>Interpretation:</strong></p>
+<ul>
+<li><p>Average RMSE across folds = general model performance.</p></li>
+<li><p>Lower variability between folds = more consistent model.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="robustness-check" class="level2">
+<h2 class="anchored" data-anchor-id="robustness-check">6. Robustness Check</h2>
+<ul>
+<li><p>Change the seed.</p></li>
+<li><p>Re-run CV to check variability.</p></li>
+<li><p>Optionally try repeated CV (<code>repeats = 5</code>) for more robust results.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Try with a different seed</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5678</span>) </span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>cv_results1_new <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  wf1,</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse)</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>cv_results2_new <span class="ot">&lt;-</span> <span class="fu">fit_resamples</span>(</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>  wf2,</span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> cv_folds,</span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">metric_set</span>(rmse)</span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare old vs new RMSE estimates</span></span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(cv_results1_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  .metric .estimator  mean     n std_err .config             
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard    222.    10    3.47 Preprocessor1_Model1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(cv_results2_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  .metric .estimator  mean     n std_err .config             
+  &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+1 rmse    standard    222.    10    3.29 Preprocessor1_Model1</code></pre>
+</div>
+</div>
+<section id="takeaways" class="level3">
+<h3 class="anchored" data-anchor-id="takeaways"><strong>Takeaways:</strong></h3>
+<ul>
+<li><p>Lower RMSE → better predictive accuracy</p></li>
+<li><p>Adding predictors → reduces RMSE</p>
+<ul>
+<li>The fact that both models with predictors are only modestly better than the null model means that the predictors might not be very strong,&nbsp;</li>
+</ul></li>
+<li><p>Cross-validation RMSE should be close to training RMSE if the model generalizes well</p></li>
+<li><p>High cross-validation variability → model might not generalize well</p></li>
+</ul>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
