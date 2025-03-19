@@ -3,20 +3,38 @@ title: "Fitting Model"
 author: "Hope Grismer"
 date: "2025-02-28"
 output: html_document
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
-Prompts  - "Write code to load the data into R. Then write code to make a plot that shows a line for each individual, with DV on the y-axis and time on the x-axis. Stratify by dose (e.g., use a different color for each dose, or facets).
+## FITTING EXERCISE !!!!
+
+## Prompt #1
+
+"Write code to load the data into R. Then write code to make a plot that
+shows a line for each individual, with DV on the y-axis and time on the
+x-axis. Stratify by dose (e.g., use a different color for each dose, or
+facets).
 
 Write code that keeps only observations with OCC = 1.
 
-Write code to exclude the observations with TIME = 0, then compute the sum of the DV variable for each individual using dplyr::summarize(). Call this variable Y. The result from this step should be a data frame/tibble of size 120 x 2, one column for the ID one for the variable Y. Next, create a data frame that contains only the observations where TIME == 0. This should be a tibble of size 120 x 17. Finally, use the appropriate join function to combine those two data frames, to get a data frame of size 120 x 18.
+Write code to exclude the observations with TIME = 0, then compute the
+sum of the DV variable for each individual using dplyr::summarize().
+Call this variable Y. The result from this step should be a data
+frame/tibble of size 120 x 2, one column for the ID one for the variable
+Y. Next, create a data frame that contains only the observations where
+TIME == 0. This should be a tibble of size 120 x 17. Finally, use the
+appropriate join function to combine those two data frames, to get a
+data frame of size 120 x 18.
 
-Write code that converts RACE and SEX to factor variables and keeps only these variables: Y,DOSE,AGE,SEX,RACE,WT,HT"
+Write code that converts RACE and SEX to factor variables and keeps only
+these variables: Y,DOSE,AGE,SEX,RACE,WT,HT"
 
-"Make some useful summary tables.
-Show some scatterplots or boxplots between the main outcome of interest (total drug, Y) and other predictors.
-Plot the distributions of your variables to make sure they all make sense.
-Look at some pair/correlation plots."
+"Make some useful summary tables. Show some scatterplots or boxplots
+between the main outcome of interest (total drug, Y) and other
+predictors. Plot the distributions of your variables to make sure they
+all make sense. Look at some pair/correlation plots."
 
 ```{r}
 # Install and load necessary packages
@@ -188,13 +206,19 @@ cor_plot <- ggpairs(df_cleaned %>% select(Y, DOSE, AGE, WT)) +
 print(cor_plot)
 
 ```
-Prompts - "Fit a linear model to the continuous outcome (Y) using the main predictor of interest, which we’ll assume here to be DOSE.
-Fit a linear model to the continuous outcome (Y) using all predictors.
-For both models, compute RMSE and R-squared and print them."
 
-"Fit a logistic model to the categorical/binary outcome (SEX) using the main predictor of interest, which we’ll again assume here to be DOSE.
-Fit a logistic model to SEX using all predictors.
-For both models, compute accuracy and ROC-AUC and print them."
+## Prompt #2
+
+Prompts - "Fit a linear model to the continuous outcome (Y) using the
+main predictor of interest, which we’ll assume here to be DOSE. Fit a
+linear model to the continuous outcome (Y) using all predictors. For
+both models, compute RMSE and R-squared and print them."
+
+"Fit a logistic model to the categorical/binary outcome (SEX) using the
+main predictor of interest, which we’ll again assume here to be DOSE.
+Fit a logistic model to SEX using all predictors. For both models,
+compute accuracy and ROC-AUC and print them."
+
 ```{r}
 
 # Install pROC package 
@@ -330,27 +354,449 @@ cat("ROC-AUC:", auc(logit_all_roc), "\n\n")
 
 ```
 
-Linear model (DOSE as the main predictor):
-RMSE (Root Mean Squared Error): 12.36
-This indicates that the model’s predictions are, on average, about 12.36 units away from the actual values of Y (total drug concentration). A higher RMSE suggests that the model is not doing a very good job of predicting the outcome.
-R-squared: 0.0100
-This value is very low, meaning that the model explains only about 1% of the variance in the outcome (Y). This suggests that DOSE alone is not a strong predictor of the total drug concentration (Y). A very low R-squared indicates that other factors likely have more influence on the outcome.
+## What Do All the Models Mean Above
 
-Linear model (all predictors):
-RMSE: 8.68
-The RMSE has decreased significantly compared to the previous model, indicating an improvement in the model's predictive performance when considering all the predictors. The model is now, on average, about 8.68 units away from the actual values of Y.
-R-squared: 0.5114
-This is a substantial improvement over the previous model, suggesting that the model now explains about 51% of the variance in the total drug concentration (Y). The inclusion of additional predictors has clearly helped the model improve its accuracy and explanation of the variability in Y.
+Linear model (DOSE as the main predictor): RMSE (Root Mean Squared
+Error): 12.36 This indicates that the model’s predictions are, on
+average, about 12.36 units away from the actual values of Y (total drug
+concentration). A higher RMSE suggests that the model is not doing a
+very good job of predicting the outcome. R-squared: 0.0100 This value is
+very low, meaning that the model explains only about 1% of the variance
+in the outcome (Y). This suggests that DOSE alone is not a strong
+predictor of the total drug concentration (Y). A very low R-squared
+indicates that other factors likely have more influence on the outcome.
 
-Logistic model (DOSE as the main predictor):
-Accuracy: 0.8643
-This means the model correctly predicted SEX (male or female) about 86.43% of the time when using DOSE as the only predictor. This is a relatively high accuracy, suggesting that DOSE has a reasonable relationship with SEX, but accuracy alone doesn’t tell the full story.
-ROC-AUC: 0.5854
-The ROC-AUC value is relatively low (just above 0.5), suggesting that the model does not do a very good job at distinguishing between the two classes (SEX = male or female) based on DOSE alone. A value closer to 1 would indicate excellent discrimination, while a value around 0.5 suggests random guessing.
+Linear model (all predictors): RMSE: 8.68 The RMSE has decreased
+significantly compared to the previous model, indicating an improvement
+in the model's predictive performance when considering all the
+predictors. The model is now, on average, about 8.68 units away from the
+actual values of Y. R-squared: 0.5114 This is a substantial improvement
+over the previous model, suggesting that the model now explains about
+51% of the variance in the total drug concentration (Y). The inclusion
+of additional predictors has clearly helped the model improve its
+accuracy and explanation of the variability in Y.
 
-Logistic model (all predictors):
-Accuracy: 0.8390
-This accuracy is still quite good, though slightly lower than the model with DOSE alone. It means the model is still fairly reliable at predicting SEX based on the predictors.
-ROC-AUC: 0.9742
-This is a very high value, indicating that the logistic model with all predictors does an excellent job at distinguishing between the two classes (SEX = male or female). This suggests that the combination of predictors (including DOSE, AGE, etc.) is highly effective at discriminating between male and female participants.
+Logistic model (DOSE as the main predictor): Accuracy: 0.8643 This means
+the model correctly predicted SEX (male or female) about 86.43% of the
+time when using DOSE as the only predictor. This is a relatively high
+accuracy, suggesting that DOSE has a reasonable relationship with SEX,
+but accuracy alone doesn’t tell the full story. ROC-AUC: 0.5854 The
+ROC-AUC value is relatively low (just above 0.5), suggesting that the
+model does not do a very good job at distinguishing between the two
+classes (SEX = male or female) based on DOSE alone. A value closer to 1
+would indicate excellent discrimination, while a value around 0.5
+suggests random guessing.
 
+Logistic model (all predictors): Accuracy: 0.8390 This accuracy is still
+quite good, though slightly lower than the model with DOSE alone. It
+means the model is still fairly reliable at predicting SEX based on the
+predictors. ROC-AUC: 0.9742 This is a very high value, indicating that
+the logistic model with all predictors does an excellent job at
+distinguishing between the two classes (SEX = male or female). This
+suggests that the combination of predictors (including DOSE, AGE, etc.)
+is highly effective at discriminating between male and female
+participants.
+
+## EXERCISE 10 !!!
+
+## 1. Data Wrangling and Setup
+
+-   Remove RACE from the dataset.
+
+-   Keep only Y, DOSE, AGE, SEX, WT, and HT.
+
+-   Ensure there are 120 rows left.
+
+-   Set the random seed at the beginning (rngseed = 1234).
+
+```{r}
+# Load required libraries
+library(tidymodels)
+library(dplyr)
+library(rsample)
+
+# Set seed for reproducibility
+rngseed <- 1234
+set.seed(rngseed)
+
+# Load the data
+data <- read.csv(here::here("fitting-exercise", "Mavoglurant_A2121_nmpk.csv"))
+
+# Remove RACE and keep relevant variables
+cleaned_data <- data %>%
+  select(DV, DOSE, AGE, SEX, WT, HT) %>%
+  na.omit() %>%
+  rename(Y = DV) # Rename DV to Y for consistency with the instructions
+
+# Check dimensions (should be 120 rows, 6 columns)
+dim(cleaned_data)
+```
+
+[**What happened in this step above:**]{.underline}
+
+**select(DV, DOSE, AGE, SEX, WT, HT)**
+
+-   This selects only the relevant variables from the dataset.
+
+-   `DV` is the dependent (outcome) variable we’re trying to predict.
+
+-   The other five (`DOSE`, `AGE`, `SEX`, `WT`, `HT`) are predictors
+    (independent variables).
+
+<!-- -->
+
+-   **na.omit()**
+
+    -   This removes rows with any missing (`NA`) values.
+
+    -   Missing data can mess up model fitting, so it's common to drop
+        them unless you plan to impute (fill in) the missing values.
+
+-   **rename(Y = DV)**
+
+    -   Renames the `DV` column to `Y` for consistency with the
+        instructions.
+
+    -   This way, the outcome variable is consistently
+        called `Y` throughout the analysis.
+
+## 2. Train vs. Test Data Split
+
+-   Use initial_split() from rsample (75% train, 25% test).
+
+-   Confirm the split size matches expectations (\~90 training, \~30
+    testing).
+
+```{r}
+# Split into 75% training and 25% testing
+set.seed(rngseed) # Reset seed before sampling
+data_split <- initial_split(cleaned_data, prop = 0.75)
+train_data <- training(data_split)
+test_data <- testing(data_split)
+
+# Check split sizes
+dim(train_data) # ~90 rows
+dim(test_data)  # ~30 rows
+```
+
+[**What happened in this step above:**]{.underline}
+
+-   **set.seed(rngseed)**
+
+    -   Ensures that the random split is reproducible.
+
+    -   If you set the same seed and run the code again, you'll get the
+        exact same split — useful for debugging and reproducibility.
+
+-   **initial_split(cleaned_data, prop = 0.75)**
+
+    -   Randomly splits the data into:
+
+        -   75% training data (used to fit the model)
+
+        -   25% test data (held back to evaluate the model later)
+
+    -   This mimics a real-world scenario where you'd train a model on
+        existing data and test it on unseen data.
+
+-   **training(data_split)** and **testing(data_split)**
+
+    -   Extracts the training and test datasets from the split.
+
+## 3. Modeling Fitting
+
+-   Fit two linear models using `tidymodels::linear_reg()`:
+
+    -   Model 1: `Y ~ DOSE`
+
+    -   Model 2: `Y ~ DOSE + AGE + SEX + WT + HT`
+
+-   Use `metric = RMSE`.
+
+```{r}
+# Define the model specifications
+model_spec1 <- linear_reg() %>%
+  set_engine("lm") %>%
+  set_mode("regression")
+
+model_spec2 <- linear_reg() %>%
+  set_engine("lm") %>%
+  set_mode("regression")
+
+# Fit the models on the training set
+fit1 <- model_spec1 %>%
+  fit(Y ~ DOSE, data = train_data)
+
+fit2 <- model_spec2 %>%
+  fit(Y ~ DOSE + AGE + SEX + WT + HT, data = train_data)
+
+```
+
+[**What happened in this step above:**]{.underline}
+
+-   **linear_reg()**
+
+    -   Creates a linear regression model.
+
+    -   Linear regression estimates the relationship between the
+        predictors and the outcome using the formula:
+
+    Y=β0+β1⋅DOSE+β2⋅AGE+…+ϵY=β0​+β1​⋅DOSE+β2​⋅AGE+…+ϵ
+
+    where:
+
+    -   YY = predicted outcome
+
+    -   β0β0​ = intercept
+
+    -   β1,β2,…β1​,β2​,… = regression coefficients (how much each
+        predictor contributes)
+
+    -   ϵϵ = error term (difference between actual and predicted values)
+
+-   **set_engine("lm")**
+
+    -   Specifies that the model should be fitted using the base
+        R `lm()` function (ordinary least squares).
+
+-   **fit(Y \~ DOSE, data = train_data)**
+
+    -   `Y ~ DOSE` fits a simple linear regression with only DOSE as the
+        predictor.
+
+    -   The second model adds all predictors (`AGE`, `SEX`, `WT`, `HT`)
+        for a more complex model.
+
+## 4. Model Performance on Training Set
+
+-   Compute RMSE for both models on training data.
+
+-   Compute RMSE for a null model using `tidymodels::null_model()`.
+
+-   Compare RMSE values.
+
+```{r}
+# Predict on training data
+pred1 <- predict(fit1, train_data) %>%
+  bind_cols(train_data)
+
+pred2 <- predict(fit2, train_data) %>%
+  bind_cols(train_data)
+
+# Compute RMSE
+rmse1 <- rmse(pred1, truth = Y, estimate = .pred)
+rmse2 <- rmse(pred2, truth = Y, estimate = .pred)
+
+# Null model
+null_mod <- null_model(mode = "regression") %>%
+  set_engine("parsnip") %>%
+  fit(Y ~ 1, data = train_data)
+
+# Predict with null model
+null_pred <- predict(null_mod, train_data) %>%
+  bind_cols(train_data)
+
+# RMSE for null model
+null_rmse <- rmse(null_pred, truth = Y, estimate = .pred)
+
+# Compare RMSE values
+rmse1$.estimate
+rmse2$.estimate
+null_rmse$.estimate
+```
+
+| Model | RMSE Value | Interpretation |
+|-------|------------|----------------|
+
+|  |  |  |
+|------------------------|------------------------|------------------------|
+| **Model 1** (Only `DOSE` as predictor) | `222.56` | The model using only `DOSE` explains some variation but is not particularly accurate. |
+
+|  |  |  |
+|------------------------|------------------------|------------------------|
+| **Model 2** (All predictors) | `221.90` | Slightly better than Model 1 — adding more predictors improves the model’s accuracy a bit. |
+
+|  |  |  |
+|------------------------|------------------------|------------------------|
+| **Null Model** (Mean-only) | `228.95` | This is the benchmark — it reflects the RMSE you’d get if you just predicted the mean outcome for all cases. |
+
+[**Minimal Improvement from Adding Predictors**]{.underline}
+
+-   Model 2 (all predictors) has an RMSE of **221.90**, which is
+    only **0.66** lower than Model 1 (DOSE-only) at **222.56**.
+
+-   This small improvement suggests that adding `AGE`, `SEX`, `WT`,
+    and `HT` does **not meaningfully improve predictive
+    accuracy** beyond using `DOSE` alone.
+
+-   It implies that **DOSE** is the primary driver of the outcome (`Y`),
+    and the other predictors might not have a strong relationship
+    with `Y` or might introduce noise.
+
+[**Predictive Performance Close to Null Model**]{.underline}
+
+-   The null model (mean-only) RMSE is **228.95**, which is **just
+    slightly worse** than the fitted models.
+
+-   The fact that the RMSE values for the fitted models are so close to
+    the null model suggests that the predictors **don’t explain much
+    variance** in the outcome.
+
+-   This hints that the relationship between the predictors and `Y` is
+    either **weak**, **nonlinear**, or **confounded** by unmeasured
+    factors.
+
+[**Model Complexity Does Not Improve Performance**]{.underline}
+
+-   The fact that Model 2 (more complex) and Model 1 (simpler) have
+    almost identical RMSE values means that adding more predictors **is
+    not adding meaningful information.**
+
+[**What happened in this step above:**]{.underline}
+
+-   The null model predicts the **mean** of `Y` for every observation.
+
+-   If the null model’s RMSE is high, it means the data is hard to
+    predict.
+
+-   If the null model's RMSE is close to the other models, the
+    predictors aren’t adding much value.
+
+<!-- -->
+
+-   **predict(new_data = train_data)**
+
+    -   Predicts `Y` values on the training data using the model.
+
+-   **bind_cols(train_data)**
+
+    -   Merges predicted values with the original data.
+
+-   **metrics(truth = Y, estimate = .pred)**
+
+    -   Computes performance metrics (like RMSE).
+
+    -   **RMSE (Root Mean Squared Error)** measures how far the
+        predicted values are from the actual values.
+
+## 5. Cross Validation
+
+-   Use 10-fold cross-validation (`vfold_cv()`).
+
+-   Compute RMSE for both models.
+
+-   Compare with training RMSE values.
+
+-   Look at the standard error for RMSE.
+
+```{r}
+set.seed(rngseed) # Reset seed before CV
+
+# Create 10-fold cross-validation
+cv_folds <- vfold_cv(train_data, v = 10)
+
+# Define workflows
+wf1 <- workflow() %>%
+  add_model(model_spec1) %>%
+  add_formula(Y ~ DOSE)
+
+wf2 <- workflow() %>%
+  add_model(model_spec2) %>%
+  add_formula(Y ~ DOSE + AGE + SEX + WT + HT)
+
+# Fit and evaluate with CV
+cv_results1 <- fit_resamples(
+  wf1,
+  resamples = cv_folds,
+  metrics = metric_set(rmse)
+)
+
+cv_results2 <- fit_resamples(
+  wf2,
+  resamples = cv_folds,
+  metrics = metric_set(rmse)
+)
+
+# Get average RMSE and standard error
+collect_metrics(cv_results1)
+collect_metrics(cv_results2)
+
+```
+
+[**Low Variability in Performance with Cross Validation**]{.underline}
+
+-   The standard error from the cross-validation is **\~3.47**,
+    indicating that the model’s performance is **consistent** across
+    different data splits.
+
+-   This suggests that the model is **stable** and **not overfitting** —
+    even though predictive power is weak, the model generalizes well
+    across different subsets of the data.
+
+[**What happened in this step above:**]{.underline}
+
+-   **vfold_cv(train_data, v = 10)**
+
+    -   Creates 10 folds for cross-validation.
+
+    -   The model is trained on 9 folds and evaluated on the 10th —
+        repeated 10 times.
+
+-   **fit_resamples()**
+
+    -   Trains the model and computes RMSE for each fold.
+
+-   **metric_set(rmse)**
+
+    -   Specifies that RMSE should be computed.
+
+-   **Interpretation:**
+
+    -   Average RMSE across folds = general model performance.
+
+    -   Lower variability between folds = more consistent model.
+
+## 6. Robustness Check
+
+-   Change the seed.
+
+-   Re-run CV to check variability.
+
+-   Optionally try repeated CV (`repeats = 5`) for more robust results.
+
+```{r}
+# Try with a different seed
+set.seed(5678) 
+
+cv_results1_new <- fit_resamples(
+  wf1,
+  resamples = cv_folds,
+  metrics = metric_set(rmse)
+)
+
+cv_results2_new <- fit_resamples(
+  wf2,
+  resamples = cv_folds,
+  metrics = metric_set(rmse)
+)
+
+# Compare old vs new RMSE estimates
+collect_metrics(cv_results1_new)
+collect_metrics(cv_results2_new)
+
+```
+
+### **Takeaways:**
+
+-   Lower RMSE → better predictive accuracy
+
+-   Adding predictors → reduces RMSE
+
+    -   The fact that both models with predictors are only modestly
+        better than the null model means that the predictors might not
+        be very strong, 
+
+-   Cross-validation RMSE should be close to training RMSE if the model
+    generalizes well
+
+-   High cross-validation variability → model might not generalize well
