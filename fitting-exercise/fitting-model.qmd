@@ -47,7 +47,7 @@ library(GGally)
 library(skimr)
 
 # Load the Mavoglurant_A2121_nmpk.csv data
-df <- read.csv("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/fitting-exercise/Mavoglurant_A2121_nmpk.csv")
+df <- read.csv(here::here("fitting-exercise", "Mavoglurant_A2121_nmpk.csv"))
 
 # Initial exploration
 glimpse(df)
@@ -229,7 +229,7 @@ library(pROC)
 library(tidymodels)
 
 # Load the data
-df <- read.csv("/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/fitting-exercise/Mavoglurant_A2121_nmpk.csv")
+df <- read.csv(here::here("fitting-exercise", "Mavoglurant_A2121_nmpk.csv"))
 
 # Data Preprocessing - Remove OCC = 2, and convert necessary columns to factors
 df_cleaned <- df %>%
@@ -805,3 +805,153 @@ collect_metrics(cv_results2_new)
     generalizes well
 
 -   High cross-validation variability → model might not generalize well
+
+# This section added by Vincent Nguyen
+
+## Part 2
+
+### Model Predictions
+
+This section goes through the Model Predictions section. This section
+assesses the predicted values for each model and also plots it.
+Residuals are also computed for further analysis.
+
+```{r}
+
+# Create a data frame with observed and predicted values for each model
+predictions_df <- bind_rows(
+  pred1 %>% mutate(Model = "Model 1"),
+  pred2 %>% mutate(Model = "Model 2"),
+  null_pred %>% mutate(Model = "Null Model")
+) %>%
+  select(Y, .pred, Model) %>%
+  rename(Observed = Y, Predicted = .pred)
+
+# Plot observed vs. predicted values
+obs_pred_models_plot <- ggplot(predictions_df, aes(x = Observed, y = Predicted, color = Model, shape = Model)) +
+  geom_point(alpha = 0.6, size = 2) +  
+  geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "black") +  
+  scale_x_continuous(limits = c(0, 500)) +  
+  scale_y_continuous(limits = c(0, 500)) +  
+  labs(
+    title = "Observed vs Predicted Values",
+    x = "Observed",
+    y = "Predicted",
+    color = "Model",
+    shape = "Model"
+  ) +
+  theme_minimal()
+
+print(obs_pred_models_plot)
+
+# Compute residuals for model 2
+model2_residual <- predictions_df %>%
+  filter(Model == "Model 2") %>%
+  mutate(Residual = Predicted - Observed)
+
+residual_plot <- ggplot(model2_residual, aes(x = Predicted, y = Residual)) +
+  geom_point(alpha = 0.6, color = "black") +
+  geom_hline(yintercept = 0, color = "blue") +
+  scale_y_continuous(limits = c(-max(abs(model2_residual$Residual)), max(abs(model2_residual$Residual)))) + # line assisted by ChatGPT
+  labs(
+    title = "Predicted Values vs Residuals for Model 2",
+    x = "Predicted Value",
+    y = "Residual"
+  ) + theme_minimal()
+
+print(residual_plot)
+  
+```
+
+### Model Predictions and Uncertainty
+
+This section entails bootstrapping, fitting models to the bootstrapping
+samples, and the computation/graphing of other various statistics.
+
+```{r}
+library(rsample)
+library(purrr)
+library(tidymodels)
+
+# Set seed
+set.seed(1234)
+
+# Create 100 bootstraps from training data
+train_bootstrap <- bootstraps(train_data, time = 100)
+
+# Function for fitting model and creating predictions
+# Assisted by chatGPT
+
+boot_fit_pred <- map(train_bootstrap$splits, function(split) {
+  # Extract bootstrap sample
+  bootstrap_sample <- analysis(split)
+  
+  # Model fitting
+  model_fit <- model_spec2 %>%
+    fit(Y ~ DOSE + AGE + SEX + WT + HT, data = bootstrap_sample)
+  
+  # Make predictions
+  predictions <- predict(model_fit, new_data = train_data) %>%
+    mutate(Observed = train_data$Y)
+  
+  return(predictions)
+})
+
+# The next few lines were debugged and assisted through ChatGPT
+# Combine predictions from all bootstrap samples
+bootstrap_pred_df <- bind_rows(boot_fit_pred, .id = "Bootstrap_Sample")
+
+# Extract predictions for use later
+boot_preds <- map(boot_fit_pred, ~ .x$.pred)
+
+# Combine into matrix
+pred_bs <- do.call(rbind, boot_preds)
+
+# Calculate values for preds matrix
+preds <- pred_bs %>% 
+  apply(2, function(x) c(
+    Mean = mean(x),  
+    Lower = quantile(x, 0.055),  
+    Median = quantile(x, 0.5),   
+    Upper = quantile(x, 0.945)   
+  )) %>% 
+  t()
+
+
+# Create dataframe with observed values, point estimate, and bootstrap values
+plot_df <- data.frame(
+  observed = train_data$Y,
+  PointEstimate = preds[ , 1],
+  Lower = preds[ , 2],
+  Median = preds[ , 3],
+  Upper = preds[ , 4]
+)
+
+final_plot <- ggplot(plot_df, aes(x = observed)) +
+  
+  # Plot point estimates
+  geom_point(aes(y = PointEstimate), color = "black", shape = 16, size = 3) +
+  
+  # Plot median of bootstraps
+  geom_point(aes(y = Median), color = "red", shape = 17, size = 1) +
+  
+  # Plot CI
+  geom_errorbar(aes(ymin = Lower, ymax = Upper), color = "blue", width = 0.2) +
+  
+  # 45 degree line
+  geom_abline(slope = 1, intercept = 0, color = "darkgray", linetype = "dashed") +
+  
+  # Labels
+  labs(x = "Observed Values", y = "Predicted Values (Bootstrap)",
+       title = "Observed vs Predicted Values, Median, and 89% CI") +
+  theme_minimal()
+
+print(final_plot)
+```
+
+Something interesting about final_plot is that the median and point
+estimate seem to be the same or similar values. When I asked ChatGPT
+about the implications, it says that the median and point estimate's
+similarity can shows that the model is stable and not highly volatile
+across different data sets. It also says that this can indicate the
+model is generalizable.
