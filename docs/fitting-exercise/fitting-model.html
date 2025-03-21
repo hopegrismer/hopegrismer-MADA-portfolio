@@ -244,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmp8y31m7/downloaded_packages</code></pre>
+    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmpa3l1Vh/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -989,7 +989,7 @@ $ HT   &lt;dbl&gt; 1.769997, 1.759850, 1.809847, 1.649993, 1.560052, 1.829862, 1
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmp8y31m7/downloaded_packages</code></pre>
+    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmpa3l1Vh/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pROC package</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1236,7 +1236,7 @@ Setting direction: controls &gt; cases</code></pre>
 <pre><code>[1] 2678    6</code></pre>
 </div>
 </div>
-<p><u><strong>What happened in this step above:</strong></u></p>
+<p><u><strong>What happened in this step above (steps noted for my benefit/future benefit):</strong></u></p>
 <p><strong>select(DV, DOSE, AGE, SEX, WT, HT)</strong></p>
 <ul>
 <li><p>This selects only the relevant variables from the dataset.</p></li>
@@ -1280,7 +1280,7 @@ Setting direction: controls &gt; cases</code></pre>
 <pre><code>[1] 670   6</code></pre>
 </div>
 </div>
-<p><u><strong>What happened in this step above:</strong></u></p>
+<p><u><strong>What happened in this step above (steps noted for my benefit/future benefit):</strong></u></p>
 <ul>
 <li><p><strong>set.seed(rngseed)</strong></p>
 <ul>
@@ -1329,7 +1329,7 @@ Setting direction: controls &gt; cases</code></pre>
 <span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> model_spec2 <span class="sc">%&gt;%</span></span>
 <span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><u><strong>What happened in this step above:</strong></u></p>
+<p><u><strong>What happened in this step above (steps noted for my benefit/future benefit):</strong></u></p>
 <ul>
 <li><p><strong>linear_reg()</strong></p>
 <ul>
@@ -1469,7 +1469,7 @@ Setting direction: controls &gt; cases</code></pre>
 <ul>
 <li>The fact that Model 2 (more complex) and Model 1 (simpler) have almost identical RMSE values means that adding more predictors <strong>is not adding meaningful information.</strong></li>
 </ul>
-<p><u><strong>What happened in this step above:</strong></u></p>
+<p><u><strong>What happened in this step above (steps noted for my benefit/future benefit):</strong></u></p>
 <ul>
 <li><p>The null model predicts the&nbsp;<strong>mean</strong>&nbsp;of&nbsp;<code>Y</code>&nbsp;for every observation.</p></li>
 <li><p>If the null model’s RMSE is high, it means the data is hard to predict.</p></li>
@@ -1549,7 +1549,7 @@ Setting direction: controls &gt; cases</code></pre>
 <li><p>The standard error from the cross-validation is&nbsp;<strong>~3.47</strong>, indicating that the model’s performance is&nbsp;<strong>consistent</strong>&nbsp;across different data splits.</p></li>
 <li><p>This suggests that the model is&nbsp;<strong>stable</strong>&nbsp;and&nbsp;<strong>not overfitting</strong>&nbsp;— even though predictive power is weak, the model generalizes well across different subsets of the data.</p></li>
 </ul>
-<p><u><strong>What happened in this step above:</strong></u></p>
+<p><u><strong>What happened in this step above (steps noted for my benefit/future benefit):</strong></u></p>
 <ul>
 <li><p><strong>vfold_cv(train_data, v = 10)</strong></p>
 <ul>

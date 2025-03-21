@@ -612,15 +612,15 @@ null_rmse$.estimate
 |-------|------------|----------------|
 
 |  |  |  |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **Model 1** (Only `DOSE` as predictor) | `222.56` | The model using only `DOSE` explains some variation but is not particularly accurate. |
 
 |  |  |  |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **Model 2** (All predictors) | `221.90` | Slightly better than Model 1 — adding more predictors improves the model’s accuracy a bit. |
 
 |  |  |  |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **Null Model** (Mean-only) | `228.95` | This is the benchmark — it reflects the RMSE you’d get if you just predicted the mean outcome for all cases. |
 
 [**Minimal Improvement from Adding Predictors**]{.underline}
