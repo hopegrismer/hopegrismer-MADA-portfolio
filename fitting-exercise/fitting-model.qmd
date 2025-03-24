@@ -526,10 +526,10 @@ model_spec2 <- linear_reg() %>%
   set_mode("regression")
 
 # Fit the models on the training set
-fit1 <- model_spec1 %>%
+model1_train <- model_spec1 %>%
   fit(Y ~ DOSE, data = train_data)
 
-fit2 <- model_spec2 %>%
+model2_train <- model_spec2 %>%
   fit(Y ~ DOSE + AGE + SEX + WT + HT, data = train_data)
 
 ```
@@ -580,10 +580,10 @@ benefit):**]{.underline}
 
 ```{r}
 # Predict on training data
-pred1 <- predict(fit1, train_data) %>%
+pred1 <- predict(model1_train, train_data) %>%
   bind_cols(train_data)
 
-pred2 <- predict(fit2, train_data) %>%
+pred2 <- predict(model2_train, train_data) %>%
   bind_cols(train_data)
 
 # Compute RMSE
@@ -612,15 +612,15 @@ null_rmse$.estimate
 |-------|------------|----------------|
 
 |  |  |  |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Model 1** (Only `DOSE` as predictor) | `222.56` | The model using only `DOSE` explains some variation but is not particularly accurate. |
 
 |  |  |  |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Model 2** (All predictors) | `221.90` | Slightly better than Model 1 — adding more predictors improves the model’s accuracy a bit. |
 
 |  |  |  |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | **Null Model** (Mean-only) | `228.95` | This is the benchmark — it reflects the RMSE you’d get if you just predicted the mean outcome for all cases. |
 
 [**Minimal Improvement from Adding Predictors**]{.underline}
@@ -955,3 +955,70 @@ about the implications, it says that the median and point estimate's
 similarity can shows that the model is stable and not highly volatile
 across different data sets. It also says that this can indicate the
 model is generalizable.
+
+## Part 3
+
+Now I want to fit model 2 onto the test set. I will make a plot for
+predicted values versus observed values for the fit on both the training
+set and the test set.
+
+# Final evaluation using test data
+
+```{r}
+# Model 2: prediction on the train set
+pred_model2_train <- predict(model2_train, train_data) %>%
+  bind_cols(train_data["Y"])
+colnames(pred_model2_train) <- c("pred", "Y")
+
+# Model 2: prediction on the test set
+pred_model2_test <- predict(model2_train, test_data) %>%
+  bind_cols(test_data["Y"])
+colnames(pred_model2_test) <- c("pred", "Y")
+
+# Combine the two data sets and make a plot
+model2_plot <- rbind(pred_model2_train, pred_model2_test) %>%
+  mutate(set=c(rep("train set", nrow(train_data)), rep("test set", nrow(test_data)))) %>%
+  ggplot(aes(x=Y, y=pred, fill=set))+
+  geom_point(size=2, stroke=1, alpha=0.8, shape=21)+
+  scale_fill_manual(name="", values=c("green","purple"))+
+  labs(x="Observed value", y="Predicted value")+
+  theme_bw()+
+  theme(axis.title.x=element_text(size=25,color="black",margin=margin(t=15),face="bold"),
+        axis.title.y=element_text(size=25,color="black",margin=margin(r=15),face="bold"),
+        axis.text.x=element_text(color="black",size=20,vjust=0),
+        axis.text.y=element_text(color="black",size=20,hjust=1), 
+        legend.position="top",
+        legend.title=element_text(size=20), 
+        legend.text=element_text(size=18,vjust=0))
+model2_plot
+```
+
+This week’s exercise focused reproducibility by setting a seed before
+constructing a new data frame with key variables from the week eight
+dataset.
+
+The data was then split, with 75% allocated for training and the
+remaining 25% reserved for testing.
+
+Two models were built using the training set: Model 1, which included
+only dose as a predictor, and Model 2, which incorporated dose, age,
+sex, weight, and height.
+
+To evaluate performance, RMSE was calculated for both models, along with
+a null model for comparison. Model 2 demonstrated the strongest
+predictive ability, yielding the lowest RMSE.
+
+After the initial model fitting, 10-fold cross-validation was performed.
+This involved training each model ten times using 90% of the data while
+testing on the remaining 10% to assess performance via RMSE.
+
+When comparing the models, both outperformed the null model in terms of
+RMSE. Model 1 outperforms the null with a lower RMSE, though the
+visualization suggests that DOSE may not be the most effective
+predictor. Despite this, Model 1 shows clear improvement and stable
+performance in 10-fold cross-validation (CV). It makes sense that Model
+1 did better than the null model, as dose alone provides some predictive
+power for Y. However, Model 2, which includes all predictors, achieved
+the lowest RMSE, but the 10-fold CV results suggest potential over
+fitting. Model 2's added predictors, however, are reasonable since
+variables like height and weight naturally influence drug concentration.
