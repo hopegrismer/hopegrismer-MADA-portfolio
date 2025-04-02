@@ -244,7 +244,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmpa3l1Vh/downloaded_packages</code></pre>
+    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//RtmpCGujNj/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -255,7 +255,7 @@ The downloaded binary packages are in
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the Mavoglurant_A2121_nmpk.csv data</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/fitting-exercise/Mavoglurant_A2121_nmpk.csv"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"fitting-exercise"</span>, <span class="st">"Mavoglurant_A2121_nmpk.csv"</span>))</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial exploration</span></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -989,7 +989,7 @@ $ HT   &lt;dbl&gt; 1.769997, 1.759850, 1.809847, 1.649993, 1.560052, 1.829862, 1
 <div class="cell-output cell-output-stdout">
 <pre><code>
 The downloaded binary packages are in
-    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//Rtmpa3l1Vh/downloaded_packages</code></pre>
+    /var/folders/29/tsfhn2w952x9r8f27_hpzq900000gn/T//RtmpCGujNj/downloaded_packages</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pROC package</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1028,7 +1028,7 @@ Attaching package: 'pROC'</code></pre>
 ✖ recipes::step()   masks stats::step()</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/Users/hopegrismercomputer/Desktop/MADA-course/hopegrismer-MADA-portfolio/fitting-exercise/Mavoglurant_A2121_nmpk.csv"</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"fitting-exercise"</span>, <span class="st">"Mavoglurant_A2121_nmpk.csv"</span>))</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Preprocessing - Remove OCC = 2, and convert necessary columns to factors</span></span>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>df_cleaned <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
@@ -1323,10 +1323,10 @@ Setting direction: controls &gt; cases</code></pre>
 <span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
 <span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the models on the training set</span></span>
-<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> model_spec1 <span class="sc">%&gt;%</span></span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>model1_train <span class="ot">&lt;-</span> model_spec1 <span class="sc">%&gt;%</span></span>
 <span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Y <span class="sc">~</span> DOSE, <span class="at">data =</span> train_data)</span>
 <span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> model_spec2 <span class="sc">%&gt;%</span></span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a>model2_train <span class="ot">&lt;-</span> model_spec2 <span class="sc">%&gt;%</span></span>
 <span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><u><strong>What happened in this step above (steps noted for my benefit/future benefit):</strong></u></p>
@@ -1364,10 +1364,10 @@ Setting direction: controls &gt; cases</code></pre>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict on training data</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>pred1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit1, train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>pred1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model1_train, train_data) <span class="sc">%&gt;%</span></span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(train_data)</span>
 <span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>pred2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit2, train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>pred2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2_train, train_data) <span class="sc">%&gt;%</span></span>
 <span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(train_data)</span>
 <span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute RMSE</span></span>
@@ -1621,9 +1621,220 @@ Setting direction: controls &gt; cases</code></pre>
 <li><p>Cross-validation RMSE should be close to training RMSE if the model generalizes well</p></li>
 <li><p>High cross-validation variability → model might not generalize well</p></li>
 </ul>
-
-
 </section>
+</section>
+<section id="this-section-added-by-vincent-nguyen" class="level1">
+<h1>This section added by Vincent Nguyen</h1>
+<section id="part-2" class="level2">
+<h2 class="anchored" data-anchor-id="part-2">Part 2</h2>
+<section id="model-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="model-predictions">Model Predictions</h3>
+<p>This section goes through the Model Predictions section. This section assesses the predicted values for each model and also plots it. Residuals are also computed for further analysis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with observed and predicted values for each model</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>predictions_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  pred1 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">"Model 1"</span>),</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  pred2 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">"Model 2"</span>),</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  null_pred <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">"Null Model"</span>)</span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Y, .pred, Model) <span class="sc">%&gt;%</span></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Observed =</span> Y, <span class="at">Predicted =</span> .pred)</span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot observed vs. predicted values</span></span>
+<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a>obs_pred_models_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(predictions_df, <span class="fu">aes</span>(<span class="at">x =</span> Observed, <span class="at">y =</span> Predicted, <span class="at">color =</span> Model, <span class="at">shape =</span> Model)) <span class="sc">+</span></span>
+<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span>  </span>
+<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span>  </span>
+<span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>)) <span class="sc">+</span>  </span>
+<span id="cb85-15"><a href="#cb85-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">500</span>)) <span class="sc">+</span>  </span>
+<span id="cb85-16"><a href="#cb85-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb85-17"><a href="#cb85-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Observed vs Predicted Values"</span>,</span>
+<span id="cb85-18"><a href="#cb85-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Observed"</span>,</span>
+<span id="cb85-19"><a href="#cb85-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Predicted"</span>,</span>
+<span id="cb85-20"><a href="#cb85-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Model"</span>,</span>
+<span id="cb85-21"><a href="#cb85-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Model"</span></span>
+<span id="cb85-22"><a href="#cb85-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb85-23"><a href="#cb85-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb85-24"><a href="#cb85-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-25"><a href="#cb85-25" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(obs_pred_models_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 579 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fitting-model_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute residuals for model 2</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>model2_residual <span class="ot">&lt;-</span> predictions_df <span class="sc">%&gt;%</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Model <span class="sc">==</span> <span class="st">"Model 2"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Residual =</span> Predicted <span class="sc">-</span> Observed)</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>residual_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(model2_residual, <span class="fu">aes</span>(<span class="at">x =</span> Predicted, <span class="at">y =</span> Residual)) <span class="sc">+</span></span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fu">max</span>(<span class="fu">abs</span>(model2_residual<span class="sc">$</span>Residual)), <span class="fu">max</span>(<span class="fu">abs</span>(model2_residual<span class="sc">$</span>Residual)))) <span class="sc">+</span> <span class="co"># line assisted by ChatGPT</span></span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Predicted Values vs Residuals for Model 2"</span>,</span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Predicted Value"</span>,</span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residual"</span></span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(residual_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fitting-model_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="model-predictions-and-uncertainty" class="level3">
+<h3 class="anchored" data-anchor-id="model-predictions-and-uncertainty">Model Predictions and Uncertainty</h3>
+<p>This section entails bootstrapping, fitting models to the bootstrapping samples, and the computation/graphing of other various statistics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rsample)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 100 bootstraps from training data</span></span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>train_bootstrap <span class="ot">&lt;-</span> <span class="fu">bootstraps</span>(train_data, <span class="at">time =</span> <span class="dv">100</span>)</span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Function for fitting model and creating predictions</span></span>
+<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Assisted by chatGPT</span></span>
+<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-14"><a href="#cb88-14" aria-hidden="true" tabindex="-1"></a>boot_fit_pred <span class="ot">&lt;-</span> <span class="fu">map</span>(train_bootstrap<span class="sc">$</span>splits, <span class="cf">function</span>(split) {</span>
+<span id="cb88-15"><a href="#cb88-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract bootstrap sample</span></span>
+<span id="cb88-16"><a href="#cb88-16" aria-hidden="true" tabindex="-1"></a>  bootstrap_sample <span class="ot">&lt;-</span> <span class="fu">analysis</span>(split)</span>
+<span id="cb88-17"><a href="#cb88-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-18"><a href="#cb88-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Model fitting</span></span>
+<span id="cb88-19"><a href="#cb88-19" aria-hidden="true" tabindex="-1"></a>  model_fit <span class="ot">&lt;-</span> model_spec2 <span class="sc">%&gt;%</span></span>
+<span id="cb88-20"><a href="#cb88-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(Y <span class="sc">~</span> DOSE <span class="sc">+</span> AGE <span class="sc">+</span> SEX <span class="sc">+</span> WT <span class="sc">+</span> HT, <span class="at">data =</span> bootstrap_sample)</span>
+<span id="cb88-21"><a href="#cb88-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-22"><a href="#cb88-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Make predictions</span></span>
+<span id="cb88-23"><a href="#cb88-23" aria-hidden="true" tabindex="-1"></a>  predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_fit, <span class="at">new_data =</span> train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb88-24"><a href="#cb88-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">Observed =</span> train_data<span class="sc">$</span>Y)</span>
+<span id="cb88-25"><a href="#cb88-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-26"><a href="#cb88-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(predictions)</span>
+<span id="cb88-27"><a href="#cb88-27" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb88-28"><a href="#cb88-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-29"><a href="#cb88-29" aria-hidden="true" tabindex="-1"></a><span class="co"># The next few lines were debugged and assisted through ChatGPT</span></span>
+<span id="cb88-30"><a href="#cb88-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine predictions from all bootstrap samples</span></span>
+<span id="cb88-31"><a href="#cb88-31" aria-hidden="true" tabindex="-1"></a>bootstrap_pred_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(boot_fit_pred, <span class="at">.id =</span> <span class="st">"Bootstrap_Sample"</span>)</span>
+<span id="cb88-32"><a href="#cb88-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-33"><a href="#cb88-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract predictions for use later</span></span>
+<span id="cb88-34"><a href="#cb88-34" aria-hidden="true" tabindex="-1"></a>boot_preds <span class="ot">&lt;-</span> <span class="fu">map</span>(boot_fit_pred, <span class="sc">~</span> .x<span class="sc">$</span>.pred)</span>
+<span id="cb88-35"><a href="#cb88-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-36"><a href="#cb88-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine into matrix</span></span>
+<span id="cb88-37"><a href="#cb88-37" aria-hidden="true" tabindex="-1"></a>pred_bs <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, boot_preds)</span>
+<span id="cb88-38"><a href="#cb88-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-39"><a href="#cb88-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate values for preds matrix</span></span>
+<span id="cb88-40"><a href="#cb88-40" aria-hidden="true" tabindex="-1"></a>preds <span class="ot">&lt;-</span> pred_bs <span class="sc">%&gt;%</span> </span>
+<span id="cb88-41"><a href="#cb88-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(<span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">c</span>(</span>
+<span id="cb88-42"><a href="#cb88-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">Mean =</span> <span class="fu">mean</span>(x),  </span>
+<span id="cb88-43"><a href="#cb88-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">Lower =</span> <span class="fu">quantile</span>(x, <span class="fl">0.055</span>),  </span>
+<span id="cb88-44"><a href="#cb88-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">Median =</span> <span class="fu">quantile</span>(x, <span class="fl">0.5</span>),   </span>
+<span id="cb88-45"><a href="#cb88-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">Upper =</span> <span class="fu">quantile</span>(x, <span class="fl">0.945</span>)   </span>
+<span id="cb88-46"><a href="#cb88-46" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-47"><a href="#cb88-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">t</span>()</span>
+<span id="cb88-48"><a href="#cb88-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-49"><a href="#cb88-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-50"><a href="#cb88-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dataframe with observed values, point estimate, and bootstrap values</span></span>
+<span id="cb88-51"><a href="#cb88-51" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb88-52"><a href="#cb88-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">observed =</span> train_data<span class="sc">$</span>Y,</span>
+<span id="cb88-53"><a href="#cb88-53" aria-hidden="true" tabindex="-1"></a>  <span class="at">PointEstimate =</span> preds[ , <span class="dv">1</span>],</span>
+<span id="cb88-54"><a href="#cb88-54" aria-hidden="true" tabindex="-1"></a>  <span class="at">Lower =</span> preds[ , <span class="dv">2</span>],</span>
+<span id="cb88-55"><a href="#cb88-55" aria-hidden="true" tabindex="-1"></a>  <span class="at">Median =</span> preds[ , <span class="dv">3</span>],</span>
+<span id="cb88-56"><a href="#cb88-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">Upper =</span> preds[ , <span class="dv">4</span>]</span>
+<span id="cb88-57"><a href="#cb88-57" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb88-58"><a href="#cb88-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-59"><a href="#cb88-59" aria-hidden="true" tabindex="-1"></a>final_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> observed)) <span class="sc">+</span></span>
+<span id="cb88-60"><a href="#cb88-60" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-61"><a href="#cb88-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot point estimates</span></span>
+<span id="cb88-62"><a href="#cb88-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> PointEstimate), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">shape =</span> <span class="dv">16</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb88-63"><a href="#cb88-63" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-64"><a href="#cb88-64" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot median of bootstraps</span></span>
+<span id="cb88-65"><a href="#cb88-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y =</span> Median), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">shape =</span> <span class="dv">17</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb88-66"><a href="#cb88-66" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-67"><a href="#cb88-67" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot CI</span></span>
+<span id="cb88-68"><a href="#cb88-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> Lower, <span class="at">ymax =</span> Upper), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb88-69"><a href="#cb88-69" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-70"><a href="#cb88-70" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 45 degree line</span></span>
+<span id="cb88-71"><a href="#cb88-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"darkgray"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb88-72"><a href="#cb88-72" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb88-73"><a href="#cb88-73" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Labels</span></span>
+<span id="cb88-74"><a href="#cb88-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Observed Values"</span>, <span class="at">y =</span> <span class="st">"Predicted Values (Bootstrap)"</span>,</span>
+<span id="cb88-75"><a href="#cb88-75" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Observed vs Predicted Values, Median, and 89% CI"</span>) <span class="sc">+</span></span>
+<span id="cb88-76"><a href="#cb88-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb88-77"><a href="#cb88-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-78"><a href="#cb88-78" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(final_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fitting-model_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Something interesting about final_plot is that the median and point estimate seem to be the same or similar values. When I asked ChatGPT about the implications, it says that the median and point estimate’s similarity can shows that the model is stable and not highly volatile across different data sets. It also says that this can indicate the model is generalizable.</p>
+</section>
+</section>
+<section id="part-3" class="level2">
+<h2 class="anchored" data-anchor-id="part-3">Part 3</h2>
+<p>Now I want to fit model 2 onto the test set. I will make a plot for predicted values versus observed values for the fit on both the training set and the test set.</p>
+</section>
+</section>
+<section id="final-evaluation-using-test-data" class="level1">
+<h1>Final evaluation using test data</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2: prediction on the train set</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>pred_model2_train <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2_train, train_data) <span class="sc">%&gt;%</span></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(train_data[<span class="st">"Y"</span>])</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pred_model2_train) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"pred"</span>, <span class="st">"Y"</span>)</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Model 2: prediction on the test set</span></span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a>pred_model2_test <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2_train, test_data) <span class="sc">%&gt;%</span></span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(test_data[<span class="st">"Y"</span>])</span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(pred_model2_test) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"pred"</span>, <span class="st">"Y"</span>)</span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the two data sets and make a plot</span></span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>model2_plot <span class="ot">&lt;-</span> <span class="fu">rbind</span>(pred_model2_train, pred_model2_test) <span class="sc">%&gt;%</span></span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">set=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"train set"</span>, <span class="fu">nrow</span>(train_data)), <span class="fu">rep</span>(<span class="st">"test set"</span>, <span class="fu">nrow</span>(test_data)))) <span class="sc">%&gt;%</span></span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Y, <span class="at">y=</span>pred, <span class="at">fill=</span>set))<span class="sc">+</span></span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">2</span>, <span class="at">stroke=</span><span class="dv">1</span>, <span class="at">alpha=</span><span class="fl">0.8</span>, <span class="at">shape=</span><span class="dv">21</span>)<span class="sc">+</span></span>
+<span id="cb89-16"><a href="#cb89-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">name=</span><span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"green"</span>,<span class="st">"purple"</span>))<span class="sc">+</span></span>
+<span id="cb89-17"><a href="#cb89-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Observed value"</span>, <span class="at">y=</span><span class="st">"Predicted value"</span>)<span class="sc">+</span></span>
+<span id="cb89-18"><a href="#cb89-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb89-19"><a href="#cb89-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">25</span>,<span class="at">color=</span><span class="st">"black"</span>,<span class="at">margin=</span><span class="fu">margin</span>(<span class="at">t=</span><span class="dv">15</span>),<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb89-20"><a href="#cb89-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">25</span>,<span class="at">color=</span><span class="st">"black"</span>,<span class="at">margin=</span><span class="fu">margin</span>(<span class="at">r=</span><span class="dv">15</span>),<span class="at">face=</span><span class="st">"bold"</span>),</span>
+<span id="cb89-21"><a href="#cb89-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x=</span><span class="fu">element_text</span>(<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">20</span>,<span class="at">vjust=</span><span class="dv">0</span>),</span>
+<span id="cb89-22"><a href="#cb89-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_text</span>(<span class="at">color=</span><span class="st">"black"</span>,<span class="at">size=</span><span class="dv">20</span>,<span class="at">hjust=</span><span class="dv">1</span>), </span>
+<span id="cb89-23"><a href="#cb89-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">"top"</span>,</span>
+<span id="cb89-24"><a href="#cb89-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>), </span>
+<span id="cb89-25"><a href="#cb89-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">18</span>,<span class="at">vjust=</span><span class="dv">0</span>))</span>
+<span id="cb89-26"><a href="#cb89-26" aria-hidden="true" tabindex="-1"></a>model2_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="fitting-model_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This week’s exercise focused reproducibility by setting a seed before constructing a new data frame with key variables from the week eight dataset.</p>
+<p>The data was then split, with 75% allocated for training and the remaining 25% reserved for testing.</p>
+<p>Two models were built using the training set: Model 1, which included only dose as a predictor, and Model 2, which incorporated dose, age, sex, weight, and height.</p>
+<p>To evaluate performance, RMSE was calculated for both models, along with a null model for comparison. Model 2 demonstrated the strongest predictive ability, yielding the lowest RMSE.</p>
+<p>After the initial model fitting, 10-fold cross-validation was performed. This involved training each model ten times using 90% of the data while testing on the remaining 10% to assess performance via RMSE.</p>
+<p>When comparing the models, both outperformed the null model in terms of RMSE. Model 1 outperforms the null with a lower RMSE, though the visualization suggests that DOSE may not be the most effective predictor. Despite this, Model 1 shows clear improvement and stable performance in 10-fold cross-validation (CV). It makes sense that Model 1 did better than the null model, as dose alone provides some predictive power for Y. However, Model 2, which includes all predictors, achieved the lowest RMSE, but the 10-fold CV results suggest potential over fitting. Model 2’s added predictors, however, are reasonable since variables like height and weight naturally influence drug concentration.</p>
+
+
 </section>
 
 </main> <!-- /main -->

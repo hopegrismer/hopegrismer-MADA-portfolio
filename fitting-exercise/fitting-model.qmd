@@ -100,6 +100,9 @@ df_cleaned <- df_final %>%
 glimpse(df_cleaned)
 skim(df_cleaned)
 
+# Save cleaned data 
+saveRDS(df_cleaned, file = here::here("fitting-exercise", "cleaned_data.rds"))
+
 # Summary table by DOSE
 summary_table <- df_cleaned %>%
   group_by(DOSE) %>%
