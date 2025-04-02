@@ -22,6 +22,8 @@ website:
             file: presentation-exercise/fight-songs/presentation-exercise.qmd
           - text: "Fitting Exercise"
             file: fitting-exercise/fitting-model.qmd
+          - text" "ML-models-exercise"
+            file: ml-models-exercise/ml-models-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/hopegrismer/hopegrismer-MADA-portfolio      
