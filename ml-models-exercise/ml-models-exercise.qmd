@@ -261,7 +261,7 @@ plot2
 
 -   **Overfitting Risk**: Although random forests perform well in terms of predictive accuracy, they can be prone to overfitting if the trees are too deep or if there are too many trees in the forest. This overfitting means the model might perform exceptionally well on training data but might struggle to generalize to unseen data.
 
-## Tuning the Models - Something that is Normally BAD BAD (without the cross validation) 
+## Tuning the Models - Something that is Normally BAD BAD (without the cross validation)
 
 For the LASSO model, we will tune the `penalty` parameter.
 
