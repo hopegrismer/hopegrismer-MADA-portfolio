@@ -22,7 +22,7 @@ website:
             file: presentation-exercise/fight-songs/presentation-exercise.qmd
           - text: "Fitting Exercise"
             file: fitting-exercise/fitting-model.qmd
-          - text: "ML-models-exercise"
+          - text: "Machine Learning"
             file: ml-models-exercise/ml-models-exercise.qmd
     right:
       - icon: github 
