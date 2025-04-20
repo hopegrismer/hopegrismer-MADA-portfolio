@@ -1,0 +1,57 @@
+state,condition,measure_id,measure_name,score,footnote,start_date,end_date
+AK,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,140,"25, 26",2023-04-01,2024-03-31
+AL,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,145,"25, 26",2023-04-01,2024-03-31
+AR,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,133,"25, 26",2023-04-01,2024-03-31
+AS,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,NA,5,2023-04-01,2024-03-31
+AZ,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,168,"25, 26",2023-04-01,2024-03-31
+CA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,184,"25, 26",2023-04-01,2024-03-31
+CO,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,133,"25, 26",2023-04-01,2024-03-31
+CT,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,193,"25, 26",2023-04-01,2024-03-31
+DC,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,310,"25, 26",2023-04-01,2024-03-31
+DE,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,217,"25, 26",2023-04-01,2024-03-31
+FL,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,158,"25, 26",2023-04-01,2024-03-31
+GA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,160,"25, 26",2023-04-01,2024-03-31
+GU,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,NA,5,2023-04-01,2024-03-31
+HI,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,115,"25, 26",2023-04-01,2024-03-31
+IA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,120,"25, 26",2023-04-01,2024-03-31
+ID,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,142,"25, 26",2023-04-01,2024-03-31
+IL,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,173,"25, 26",2023-04-01,2024-03-31
+IN,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,125,"25, 26",2023-04-01,2024-03-31
+KS,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,120,"25, 26",2023-04-01,2024-03-31
+KY,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,153,"25, 26",2023-04-01,2024-03-31
+LA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,133,"25, 26",2023-04-01,2024-03-31
+MA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,216,"25, 26",2023-04-01,2024-03-31
+MD,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,251,"25, 26",2023-04-01,2024-03-31
+ME,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,174,"25, 26",2023-04-01,2024-03-31
+MI,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,164,"25, 26",2023-04-01,2024-03-31
+MN,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,125,"25, 26",2023-04-01,2024-03-31
+MO,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,155,"25, 26",2023-04-01,2024-03-31
+MP,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,NA,5,2023-04-01,2024-03-31
+MS,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,127,"25, 26",2023-04-01,2024-03-31
+MT,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,127,"25, 26",2023-04-01,2024-03-31
+NC,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,192,"25, 26",2023-04-01,2024-03-31
+ND,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,110,"25, 26",2023-04-01,2024-03-31
+NE,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,114,"25, 26",2023-04-01,2024-03-31
+NH,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,160,"25, 26",2023-04-01,2024-03-31
+NJ,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,187,"25, 26",2023-04-01,2024-03-31
+NM,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,159,"25, 26",2023-04-01,2024-03-31
+NV,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,144,"25, 26",2023-04-01,2024-03-31
+NY,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,199,"25, 26",2023-04-01,2024-03-31
+OH,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,156,"25, 26",2023-04-01,2024-03-31
+OK,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,119,"25, 26",2023-04-01,2024-03-31
+OR,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,153,"25, 26",2023-04-01,2024-03-31
+PA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,181,"25, 26",2023-04-01,2024-03-31
+PR,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,302,"25, 26",2023-04-01,2024-03-31
+RI,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,224,"25, 26",2023-04-01,2024-03-31
+SC,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,161,"25, 26",2023-04-01,2024-03-31
+SD,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,113,"25, 26",2023-04-01,2024-03-31
+TN,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,157,"25, 26",2023-04-01,2024-03-31
+TX,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,145,"25, 26",2023-04-01,2024-03-31
+UT,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,131,"25, 26",2023-04-01,2024-03-31
+VA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,166,"25, 26",2023-04-01,2024-03-31
+VI,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,NA,5,2023-04-01,2024-03-31
+VT,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,176,"25, 26",2023-04-01,2024-03-31
+WA,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,154,"25, 26",2023-04-01,2024-03-31
+WI,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,137,"25, 26",2023-04-01,2024-03-31
+WV,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,146,"25, 26",2023-04-01,2024-03-31
+WY,Emergency Department,OP_18b,Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better,135,"25, 26",2023-04-01,2024-03-31

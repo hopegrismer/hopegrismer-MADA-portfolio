@@ -1,0 +1,591 @@
+---
+title: "tidytuesday-exercise"
+editor: visual
+---
+
+Getting the Data
+
+```{r, include=FALSE}
+# Load necessary packages
+# Setting a specific CRAN mirror (e.g., RStudio's CRAN mirror)
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+install.packages("viridis")
+library(tidyverse)
+library(tidymodels)
+library(ggplot2)
+library(skimr)
+install.packages("here")  # Only if it's not already installed
+library(here)
+
+# Load the CSV file using a project-rooted path
+care_state <- readr::read_csv(here::here("tidytuesday-exercise", "data", "care_state.csv"))
+
+# Peek at the structure
+glimpse(care_state)
+
+head(care_state)
+```
+
+Here is the codebook for what the different variables in the table mean:
+
+### `care_state.csv`
+
+| variable | class | description |
+|------------------------|------------------------|------------------------|
+| state | character | The two-letter code for the state (or territory, etc) where the hospital is located. |
+| condition | character | The condition for which the patient was admitted. Six categories of conditions are included in the data. |
+| measure_id | character | The ID of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. |
+| measure_name | character | The name of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. |
+| score | double | The score of the measure. |
+| footnote | character | Footnotes that apply to this measure: 5 = "Results are not available for this reporting period.", 25 = "State and national averages include Veterans Health Administration (VHA) hospital data.", 26 = "State and national averages include Department of Defense (DoD) hospital data.". |
+| start_date | date | The date on which measurement began for this measure. |
+| end_date | date | The date on which measurement ended for this measure. |
+
+# Questions in Mind Based on Suggestions on GitHub
+
+-   Is there a connection between state populations and wait times?
+
+-   Which conditions have the longest wait times? The shortest?
+
+# Exploratory Data Analysis
+
+### What was done & why:
+
+#### I noticed that the measures in the measure_name column were all very different. Without creating subsets of the data, you would be comparing unlabeled scores that are not measuring the same thing. In this data set especially, this would be very adverse as some of the scores are ideally higher and some ideally are lower.
+
+#### I subsetted the data as a result in measures I was curious about.
+
+```{r, include=FALSE}
+library(dplyr)
+
+#Subsetting
+
+#Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better"
+time_b4_leaving <- care_state %>%
+  filter(measure_name == "Average (median) time patients spent in the emergency department before leaving from the visit A lower number of minutes is better")
+
+#Average (median) time patients spent in the emergency department before leaving from the visit- Psychiatric/Mental Health Patients. A lower number of minutes is better"
+time_b4_leaving_psych <- care_state %>%
+  filter(measure_name == "Average (median) time patients spent in the emergency department before leaving from the visit- Psychiatric/Mental Health Patients.  A lower number of minutes is better")
+
+#Average time patients spent in the emergency department before being sent home A lower number of minutes is better (high)"
+time_b4_discharge <- care_state %>%
+  filter(measure_name == "Average time patients spent in the emergency department before being sent home A lower number of minutes is better (high)")
+
+# Check the first few rows of each subset to verify
+head(time_b4_leaving)
+head(time_b4_leaving_psych)
+head(time_b4_discharge)
+
+```
+
+#### Perfect. Now I wanted to save these sets to further my EDA.
+
+```{r}
+library(readr)
+
+# Save Subset 1
+write_csv(time_b4_leaving, here::here("tidytuesday-exercise", "data", "time_b4_leaving_care_state.csv"))
+
+# Save Subset 2
+write_csv(time_b4_leaving_psych, here::here("tidytuesday-exercise", "data", "time_b4_leaving_psych_care_state.csv"))
+
+# Save Subset 3
+write_csv(time_b4_discharge, here::here("tidytuesday-exercise", "data", "time_b4_discharge.csv"))
+
+```
+
+#### Time to take a look at this subsets but in the context of states as well.
+
+```{r, include=FALSE}
+library(ggplot2)
+
+# Subset 1: "time_b4_leaving"
+ggplot(time_b4_leaving, aes(x = reorder(state, score, FUN = median, na.rm = TRUE), y = score)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Time Before Leaving", x = "State", y = "Score") +
+  theme_minimal() +
+  coord_flip()
+
+# Subset 2: "time_b4_leaving_psych"
+ggplot(time_b4_leaving_psych, aes(x = reorder(state, score, FUN = median, na.rm = TRUE), y = score)) +
+  geom_boxplot(fill = "lightgreen") +
+  labs(title = "Time Before Leaving - Psychiatric/Mental Health", x = "State", y = "Score") +
+  theme_minimal() +
+  coord_flip()
+
+# Subset 3: "time_b4_discharge"
+ggplot(time_b4_discharge, aes(x = reorder(state, score, FUN = median, na.rm = TRUE), y = score)) +
+  geom_boxplot(fill = "lightcoral") +
+  labs(title = "Time Before Discharge", x = "State", y = "Score") +
+  theme_minimal() +
+  coord_flip()
+
+```
+
+#### Very smushed, let's try again.
+
+```{r, include=FALSE}
+
+# Subset 1: "time_b4_leaving"
+ggplot(time_b4_leaving, aes(x = reorder(state, score, FUN = median, na.rm = TRUE), y = score)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Time Before Leaving", x = "State", y = "Time (Minutes)") +
+  theme_minimal() +
+  coord_flip() +
+  theme(axis.text.y = element_text(size = 6),  # Decrease font size further
+        plot.margin = margin(1, 1, 1, 1, "cm"))  # Adjust margins for more space
+
+# Subset 2: "time_b4_leaving_psych"
+ggplot(time_b4_leaving_psych, aes(x = reorder(state, score, FUN = median, na.rm = TRUE), y = score)) +
+  geom_boxplot(fill = "lightgreen") +
+  labs(title = "Time Before Leaving - Psychiatric/Mental Health Patients", x = "State", y = "Time (Minutes)") +
+  theme_minimal() +
+  coord_flip() +
+  theme(axis.text.y = element_text(size = 6),  # Decrease font size further
+        plot.margin = margin(1, 1, 1, 1, "cm"))  # Adjust margins for more space
+
+# Subset 3: "time_b4_discharge"
+ggplot(time_b4_discharge, aes(x = reorder(state, score, FUN = median, na.rm = TRUE), y = score)) +
+  geom_boxplot(fill = "lightcoral") +
+  labs(title = "Time Before Discharge", x = "State", y = "Time (Minutes)") +
+  theme_minimal() +
+  coord_flip() +
+  theme(axis.text.y = element_text(size = 6),  # Decrease font size further
+        plot.margin = margin(1, 1, 1, 1, "cm"))  # Adjust margins for more space
+
+```
+
+#### The state variation is glaring in whole with some states being firmly in the 100 minutes and some states being up into the 300 minute range (not good). The time before discharge graphic also showed not only large interstate differences but also large intrastate differences. For example, NM (New Mexico) had a glaringly large range. The same is true with IN, DC, ME, DE. Curious to know if these states range most highly in SES disparity or insurance coverage??
+
+```{r, include=FALSE}
+library(dplyr)
+library(knitr)
+
+# Calculate the range for each state in the time_b4_discharge dataset
+range_data <- time_b4_discharge %>%
+  group_by(state) %>%
+  summarise(
+    min_time = min(score, na.rm = TRUE),   # Minimum time
+    max_time = max(score, na.rm = TRUE),   # Maximum time
+    range = max_time - min_time            # Range (difference between max and min)
+  )
+
+# Sort the data by range to find the largest and smallest ranges
+range_data_sorted <- range_data %>%
+  arrange(desc(range))  # Sort by range in descending order
+
+# Get the top 5 largest ranges and smallest ranges
+largest_ranges <- head(range_data_sorted, 5)
+smallest_ranges <- tail(range_data_sorted, 5)
+
+# Combine both tables (largest and smallest ranges)
+range_table <- bind_rows(
+  mutate(largest_ranges, Range_Type = "Largest"),
+  mutate(smallest_ranges, Range_Type = "Smallest")
+)
+
+# Show the table
+range_table %>%
+  select(Range_Type, state, min_time, max_time, range) %>%
+  kable()  # Use knitr::kable() to display the table neatly
+
+```
+
+#### This table was helpful to print out the largest range states that we saw in the graph. But I included another iteration of this table because I saw that some missing data created negative values (-Inf). This meant that the smallest range ones in the table did not necessary show the smallest ranges in discharge time but just negative calculation.
+
+```{r, include=FALSE}
+library(dplyr)
+library(knitr)
+
+# Calculate the range for each state and exclude problem rows
+range_data <- time_b4_discharge %>%
+  group_by(state) %>%
+  summarise(
+    min_time = min(score, na.rm = TRUE),
+    max_time = max(score, na.rm = TRUE),
+    range = max_time - min_time
+  ) %>%
+  filter(is.finite(range), !is.na(range), range > 0)
+
+# Get top 5 largest and smallest ranges
+largest_ranges <- range_data %>% arrange(desc(range)) %>% slice_head(n = 5)
+smallest_ranges <- range_data %>% arrange(range) %>% slice_head(n = 5)
+
+# Combine and label
+range_table <- bind_rows(
+  mutate(largest_ranges, Range_Type = "Largest"),
+  mutate(smallest_ranges, Range_Type = "Smallest")
+)
+
+# Display the table
+range_table %>%
+  select(Range_Type, state, min_time, max_time, range) %>%
+  kable()
+
+```
+
+#### So, next, I thought it would be neat to try it out on a map.
+
+```{r, include=FALSE}
+install.packages("sf")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("viridis")  # For color gradients
+
+
+library(sf)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+
+# Load the shapefile for US states
+us_states <- sf::st_read(here("tidytuesday-exercise", "US_state.shp"))
+
+
+# Your data with state codes and time values (already subsetted)
+# For example, assuming 'time_b4_leaving' has 'state' (2-letter codes) and 'score' (time values)
+
+# Ensure your state codes match the shapefile state codes, if needed (they should be the same 2-letter state codes)
+
+# Merge your data with the shapefile based on the state codes
+merged_data <- us_states %>%
+  left_join(time_b4_leaving, by = c("STUSPS" = "state"))
+
+# Plot the data on the map using a gradient based on time (score)
+time_b4_leavingplot = ggplot(merged_data) +
+  geom_sf(aes(fill = score), color = "white") +  # Color the states based on 'score' (time)
+  scale_fill_viridis(name = "Average Time (min)", option = "C", direction = -1) +  # Choose a gradient color scale
+  theme_minimal() +
+  labs(
+    title = "Hotspots of Time Before Leaving",
+    subtitle = "Average Time Spent in the ED"
+  ) +
+  theme(
+    axis.text = element_blank(),  # Remove axis text
+    axis.ticks = element_blank(),  # Remove axis ticks
+    panel.grid = element_blank(),  # Remove grid lines
+    plot.title = element_text(size = 16, face = "bold"),  # Adjust title size
+    plot.subtitle = element_text(size = 12),  # Adjust subtitle size
+    legend.title = element_text(size = 12),  # Adjust legend title size
+    legend.text = element_text(size = 10)  # Adjust legend text size
+  ) +
+  coord_sf(datum = NA)  # Remove axis to ensure the map is nicely centered
+
+time_b4_leavingplot
+
+# Save the plot as a PNG file in the 'tidytuesday-exercise' folder
+ggsave(here("tidytuesday-exercise", "leaving__time_map.png"), plot = time_b4_leavingplot, width = 10, height = 8)
+```
+
+```{r, include=FALSE}
+# Load necessary packages
+install.packages("sf")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("viridis")
+
+library(sf)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+library(here)
+
+# Load the shapefile for US states
+us_states <- sf::st_read(here("tidytuesday-exercise", "US_state.shp"))
+
+# Merge your 'time_b4_discharge' data with the shapefile based on the state codes (assuming 'state' in 'time_b4_discharge' corresponds to 'STUSPS' in the shapefile)
+merged_data_discharge <- us_states %>%
+  left_join(time_b4_discharge, by = c("STUSPS" = "state"))
+
+# Plot the data on the map using a gradient based on time (score)
+time_b4_dischargeplot = ggplot(merged_data_discharge) +
+  geom_sf(aes(fill = score), color = "white") +  # Color the states based on 'score' (time)
+  scale_fill_viridis(name = "Average Time (min)", option = "C", direction = -1) +  # Choose a gradient color scale
+  theme_minimal() +
+  labs(
+    title = "Hotspots of Time Before Discharge",
+    subtitle = "Average Time Spent in the ED Before Discharge"
+  ) +
+  theme(
+    axis.text = element_blank(),  # Remove axis text
+    axis.ticks = element_blank(),  # Remove axis ticks
+    panel.grid = element_blank(),  # Remove grid lines
+    plot.title = element_text(size = 16, face = "bold"),  # Adjust title size
+    plot.subtitle = element_text(size = 12),  # Adjust subtitle size
+    legend.title = element_text(size = 12),  # Adjust legend title size
+    legend.text = element_text(size = 10)  # Adjust legend text size
+  ) +
+  coord_sf(datum = NA)  # Remove axis to ensure the map is nicely centered
+
+time_b4_dischargeplot
+
+# Save the plot as a PNG file in the 'tidytuesday-exercise' folder
+ggsave(here("tidytuesday-exercise", "discharge_time_map.png"), plot = time_b4_dischargeplot, width = 10, height = 8)
+
+```
+
+#### To do some modeling for my question on whether income inequality is directly the reason for the variablity in ranges between states, I found some Gini Index data to compare to my Time to Discharge Data.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+install.packages("readr")
+library(readr)
+library(stringr)
+
+# Load the Gini index data
+gini_data <- read_csv(here::here("tidytuesday-exercise", "data", "gini-index-data.csv"))
+
+# Check the data structure
+head(gini_data)
+
+# Filter rows where the Label column contains "!!Estimate"
+gini_estimates_all <- gini_data %>%
+  filter(str_detect(Label, "!!Estimate"))
+
+```
+
+```{r, include=FALSE}
+library(stringi)
+
+gini_estimates_all_labels <- colnames(gini_estimates_all) <- stringi::stri_replace_all_fixed(
+  colnames(gini_estimates_all),
+  "!!Estimate",
+  "",
+  vectorize_all = FALSE
+)
+
+# View all estimates for all states
+print(gini_estimates_all_labels)
+
+# Load tidyr for pivoting
+library(tidyr)
+
+# Pivot from wide to long format (states as one column, estimates as another)
+gini_long <- gini_estimates_all %>%
+  pivot_longer(cols = everything(), 
+               names_to = "State", 
+               values_to = "Gini_Estimate")
+
+# Remove the "!!Estimate" from the State column name (cleaned earlier)
+gini_long$State <- sub("!!.*", "", gini_long$State)
+
+# Check the result
+head(gini_long)
+
+```
+
+#### So now I have my Gini Index data where I want it with my Estimates of 2023 Gini Index as a proxy for income inequality and I want to merge it with my range data I had before for each state.
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+
+# Create a state reference table using built-in vectors
+state_reference <- data.frame(
+  state_name = state.name,
+  state_abbr = state.abb,
+  stringsAsFactors = FALSE
+)
+
+# Print the state reference table to confirm it exists
+head(state_reference)
+
+# Join the state reference to gini_long to add state abbreviations
+gini_data <- gini_long %>%
+  left_join(state_reference, by = c("State" = "state_name"))
+
+# Check the resulting gini_data with the state abbreviation added
+head(gini_data)
+
+
+```
+
+#### Merging the range (difference between the minimum and maximum time to discharge) data and the Gini coefficent data.
+
+```{r, include=FALSE}
+# Load necessary libraries
+library(dplyr)
+
+# Filter range_data to keep only the 'state' and 'range' columns
+range_data_filtered <- range_data %>%
+  select(state, range)  # Keep only the state and range columns
+
+# Merge the range_data with the gini_data based on state (assuming state codes match)
+combined_data <- range_data_filtered %>%
+  left_join(gini_data, by = c("state" = "state_abbr"))
+
+# Check the resulting combined data
+head(combined_data)
+```
+
+#### To quickly check whether there's a correlation between `range` (the intrastate difference between the highest and lowest times before discharge - the outcome) and `Gini_Estimate` (predictor), here is a **scatterplot with a trend line.**
+
+```{r}
+library(ggplot2)
+
+ggplot(combined_data, aes(x = Gini_Estimate, y = range)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  labs(
+    title = "Relationship between Gini Estimate and Range",
+    x = "Gini Estimate",
+    y = "Range (Time Before Discharge)"
+  ) +
+  theme_minimal()
+
+
+```
+
+**Hypothesis**: "States with higher Gini coefficients (indicating more economic inequality) will have longer average times before discharge in hospitals due to economic barriers affecting healthcare access."
+
+Assuming that range is my "outcome" and that Gini coefficents act as a predictor.
+
+```{r, include=FALSE}
+
+library(tidymodels)
+
+# Drop any rows with missing values (important before modeling)
+model_data <- combined_data %>%
+  select(range, Gini_Estimate) %>%
+  drop_na()
+
+# Check the data
+glimpse(model_data)
+
+#Split into training and testing sets 
+
+set.seed(123)  # for reproducibility
+data_split <- initial_split(model_data, prop = 0.8)
+train_data <- training(data_split)
+test_data <- testing(data_split)
+
+#Define the recipe
+range_recipe <- recipe(range ~ Gini_Estimate, data = train_data)
+```
+
+# Setting up some models
+
+-   Null model
+
+-   Linear regression model
+
+-   Random forest model
+
+Null Model
+
+```{r, include=FALSE}
+library(dplyr)
+library(tidymodels)
+null_model <- null_model() %>%
+  set_engine("parsnip") %>%
+  set_mode("regression")
+```
+
+Linear Regression Model
+
+```{r, include=FALSE}
+lm_model <- linear_reg() %>%
+  set_engine("lm") %>%
+  set_mode("regression")
+```
+
+Random Forest
+
+```{r, include=FALSE}
+rf_model <- rand_forest(trees = 500) %>%
+  set_engine("ranger") %>%
+  set_mode("regression")
+```
+
+```{r}
+#For cross validation and workflow set up 
+
+set.seed(234)
+cv_folds <- vfold_cv(train_data, v = 5)
+null_workflow <- workflow() %>%
+  add_model(null_model) %>%
+  add_recipe(range_recipe)
+
+lm_workflow <- workflow() %>%
+  add_model(lm_model) %>%
+  add_recipe(range_recipe)
+
+rf_workflow <- workflow() %>%
+  add_model(rf_model) %>%
+  add_recipe(range_recipe)
+
+null_res <- fit_resamples(null_workflow, resamples = cv_folds)
+lm_res <- fit_resamples(lm_workflow, resamples = cv_folds)
+rf_res <- fit_resamples(rf_workflow, resamples = cv_folds)
+
+collect_metrics(null_res)
+collect_metrics(lm_res)
+collect_metrics(rf_res)
+
+print(null_res)
+print(lm_res)
+print(rf_res)
+```
+
+### Takeaways
+
+-   **RMSE (Root Mean Squared Error)**: Lower values indicate better model performance.
+
+    -   The **null model** has an RMSE of 22.1.
+
+    -   The **linear mode** (lm_res) has an RMSE of 23.0.
+
+    -   The **random forest model** (rf_res) has an RMSE of 28.3.
+
+-   **R-squared (rsq)**: R-squared values range from 0 to 1, with values closer to 1 indicating a better fit. In your case:
+
+    -   The **null model** has no R-squared value (NaN).
+
+    -   The **linear model** has an R-squared of 0.253, which means about 25.3% of the variance in `range` can be explained by the `Gini_Estimate`.
+
+    -   The **random forest model** has an R-squared of 0.199, indicating that this model explains about 19.9% of the variance in `range`.
+
+### Model Comparison
+
+-   **Null Model**: This is typically a baseline model with no predictors. It's interesting to see that your null model has the lowest RMSE (22.1), which suggests that the other models are not doing better in terms of RMSE.
+
+-   **Linear Model (lm_res)**: The linear model explains 25.3% of the variance, but its RMSE is slightly worse than the null model (23.0).
+
+-   **Random Forest (rf_res)**: The random forest has the highest RMSE (28.3) and also explains the least amount of variance (19.9%).
+
+    # **The Linear Model (lm_model)**:
+
+    -   The **linear model (lm_model)** incorporates the Gini Estimate as the sole predictor.
+
+    -   **Performance**: The RMSE of 23.0 is relatively close to the null model. However, the R² of 0.253 suggests that there is some weak relationship between Gini Estimate and time before discharge.
+
+    -   **Reason for inclusion**: This model is simple, interpretable, and provides some insight into the relationship, but there is room for improvement in terms of performance.
+
+### Evaluation on Test Data
+
+Now that the model has been chosen, we will evaluate it on the **test data** (which was set aside earlier). This is the final evaluation that will provide an honest assessment of the model's ability to generalize to new, unseen data.
+
+```{r, include=FALSE}
+
+# Evaluate the model on the test data (test_data) using RMSE and R²
+test_data_pred <- predict(lm_model, new_data = test_data)
+test_rmse <- sqrt(mean((test_data_pred - test_data$range)^2))
+test_rsq <- 1 - sum((test_data_pred - test_data$range)^2) / sum((mean(test_data$range) - test_data$range)^2)
+
+test_rmse
+test_rsq
+
+# Check residuals
+lm_residuals <- test_data$range - test_data_pred
+plot(lm_residuals)  # Plot residuals
+```
+
+Source: Data Science Learning Community (2024). Tidy Tuesday: A weekly social data project. [https://tidytues.day](https://tidytues.day/)
+
+```{r, include=FALSE}
+citation("tidytuesdayR")
+
+```
