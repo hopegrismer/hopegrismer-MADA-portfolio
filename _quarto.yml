@@ -24,6 +24,8 @@ website:
             file: fitting-exercise/fitting-model.qmd
           - text: "Machine Learning"
             file: ml-models-exercise/ml-models-exercise.qmd
+          - text: "Tidy Tuesdays"
+            file: tidytuesday-exercise/tidytuesdays-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/hopegrismer/hopegrismer-MADA-portfolio      
