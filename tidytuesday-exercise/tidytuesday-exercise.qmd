@@ -9,12 +9,10 @@ Getting the Data
 # Load necessary packages
 # Setting a specific CRAN mirror (e.g., RStudio's CRAN mirror)
 options(repos = c(CRAN = "https://cloud.r-project.org"))
-install.packages("viridis")
 library(tidyverse)
 library(tidymodels)
 library(ggplot2)
 library(skimr)
-install.packages("here")  # Only if it's not already installed
 library(here)
 
 # Load the CSV file using a project-rooted path
@@ -31,7 +29,7 @@ Here is the codebook for what the different variables in the table mean:
 ### `care_state.csv`
 
 | variable | class | description |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | state | character | The two-letter code for the state (or territory, etc) where the hospital is located. |
 | condition | character | The condition for which the patient was admitted. Six categories of conditions are included in the data. |
 | measure_id | character | The ID of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. |
@@ -228,11 +226,6 @@ range_table %>%
 #### So, next, I thought it would be neat to try it out on a map.
 
 ```{r, include=FALSE}
-install.packages("sf")
-install.packages("ggplot2")
-install.packages("dplyr")
-install.packages("viridis")  # For color gradients
-
 
 library(sf)
 library(ggplot2)
@@ -279,12 +272,6 @@ ggsave(here("tidytuesday-exercise", "leaving__time_map.png"), plot = time_b4_lea
 ```
 
 ```{r, include=FALSE}
-# Load necessary packages
-install.packages("sf")
-install.packages("ggplot2")
-install.packages("dplyr")
-install.packages("viridis")
-
 library(sf)
 library(ggplot2)
 library(dplyr)
@@ -330,49 +317,31 @@ ggsave(here("tidytuesday-exercise", "discharge_time_map.png"), plot = time_b4_di
 ```{r}
 # Load necessary libraries
 library(dplyr)
-install.packages("readr")
 library(readr)
 library(stringr)
 
-# Load the Gini index data
-gini_data <- read_csv(here::here("tidytuesday-exercise", "data", "gini-index-data.csv"))
 
-# Check the data structure
-head(gini_data)
+# Select only columns ending with '!!Estimate'
+gini_estimates_only <- gini_data %>%
+  select(matches("!!Estimate$"))
 
-# Filter rows where the Label column contains "!!Estimate"
-gini_estimates_all <- gini_data %>%
-  filter(str_detect(Label, "!!Estimate"))
+#Extract the first (and only) row containing the Gini Index values
+gini_values <- gini_estimates_only[1, ]
 
-```
+#Pivot the data to long format
+gini_long <- gini_values %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "state",
+    values_to = "gini_estimate"
+  ) %>%
+  mutate(
+    # Remove the '!!Estimate' suffix to get clean state names
+    state = str_remove(state, "!!Estimate$")
+  )
 
-```{r, include=FALSE}
-library(stringi)
-
-gini_estimates_all_labels <- colnames(gini_estimates_all) <- stringi::stri_replace_all_fixed(
-  colnames(gini_estimates_all),
-  "!!Estimate",
-  "",
-  vectorize_all = FALSE
-)
-
-# View all estimates for all states
-print(gini_estimates_all_labels)
-
-# Load tidyr for pivoting
-library(tidyr)
-
-# Pivot from wide to long format (states as one column, estimates as another)
-gini_long <- gini_estimates_all %>%
-  pivot_longer(cols = everything(), 
-               names_to = "State", 
-               values_to = "Gini_Estimate")
-
-# Remove the "!!Estimate" from the State column name (cleaned earlier)
-gini_long$State <- sub("!!.*", "", gini_long$State)
-
-# Check the result
-head(gini_long)
+# View the resulting tidy data
+print(gini_long)
 
 ```
 
