@@ -25,7 +25,7 @@ website:
           - text: "Machine Learning"
             file: ml-models-exercise/ml-models-exercise.qmd
           - text: "Tidy Tuesday"
-            file: tidytuesday-exercise/tidytuesdays-exercise.qmd
+            file: tidytuesday-exercise/tidytuesday-exercise.qmd
     right:
       - icon: github 
         href: https://github.com/hopegrismer/hopegrismer-MADA-portfolio      
