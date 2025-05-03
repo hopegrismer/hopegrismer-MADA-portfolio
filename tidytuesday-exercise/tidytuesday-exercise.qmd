@@ -29,7 +29,7 @@ Here is the codebook for what the different variables in the table mean:
 ### `care_state.csv`
 
 | variable | class | description |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | state | character | The two-letter code for the state (or territory, etc) where the hospital is located. |
 | condition | character | The condition for which the patient was admitted. Six categories of conditions are included in the data. |
 | measure_id | character | The ID of the thing being measured. Note that there are 22 unique IDs but only 21 unique names. |
