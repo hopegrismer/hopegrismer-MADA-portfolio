@@ -320,6 +320,10 @@ library(dplyr)
 library(readr)
 library(stringr)
 
+# Load Gini Index data
+gini_data <- read_csv(here("tidytuesday-exercise", "data", "gini-index-data.csv"))
+
+colnames(gini_data)
 
 # Select only columns ending with '!!Estimate'
 gini_estimates_only <- gini_data %>%
@@ -364,7 +368,7 @@ head(state_reference)
 
 # Join the state reference to gini_long to add state abbreviations
 gini_data <- gini_long %>%
-  left_join(state_reference, by = c("State" = "state_name"))
+  left_join(state_reference, by = c("state" = "state_name"))
 
 # Check the resulting gini_data with the state abbreviation added
 head(gini_data)
@@ -393,9 +397,7 @@ head(combined_data)
 #### To quickly check whether there's a correlation between `range` (the intrastate difference between the highest and lowest times before discharge - the outcome) and `Gini_Estimate` (predictor), here is a **scatterplot with a trend line.**
 
 ```{r}
-library(ggplot2)
-
-ggplot(combined_data, aes(x = Gini_Estimate, y = range)) +
+ggplot(combined_data, aes(x = gini_estimate, y = range)) +
   geom_point() +
   geom_smooth(method = "lm", se = TRUE, color = "blue") +
   labs(
@@ -404,7 +406,6 @@ ggplot(combined_data, aes(x = Gini_Estimate, y = range)) +
     y = "Range (Time Before Discharge)"
   ) +
   theme_minimal()
-
 
 ```
 
@@ -416,9 +417,8 @@ Assuming that range is my "outcome" and that Gini coefficents act as a predictor
 
 library(tidymodels)
 
-# Drop any rows with missing values (important before modeling)
 model_data <- combined_data %>%
-  select(range, Gini_Estimate) %>%
+  select(range, gini_estimate) %>%
   drop_na()
 
 # Check the data
@@ -431,8 +431,7 @@ data_split <- initial_split(model_data, prop = 0.8)
 train_data <- training(data_split)
 test_data <- testing(data_split)
 
-#Define the recipe
-range_recipe <- recipe(range ~ Gini_Estimate, data = train_data)
+range_recipe <- recipe(range ~ gini_estimate, data = train_data)
 ```
 
 # Setting up some models
@@ -537,20 +536,46 @@ print(rf_res)
 
 Now that the model has been chosen, we will evaluate it on the **test data** (which was set aside earlier). This is the final evaluation that will provide an honest assessment of the model's ability to generalize to new, unseen data.
 
-```{r, include=FALSE}
+```{r,}
 
-# Evaluate the model on the test data (test_data) using RMSE and R²
-test_data_pred <- predict(lm_model, new_data = test_data)
+# Fit the final linear model on the full training data
+final_lm_fit <- lm_workflow %>%
+  fit(data = train_data)
+
+# Predict on the test set
+test_data_pred <- predict(final_lm_fit, new_data = test_data)$.pred
+
+# Calculate RMSE and R-squared
 test_rmse <- sqrt(mean((test_data_pred - test_data$range)^2))
 test_rsq <- 1 - sum((test_data_pred - test_data$range)^2) / sum((mean(test_data$range) - test_data$range)^2)
 
 test_rmse
 test_rsq
 
-# Check residuals
+# Plot residuals
 lm_residuals <- test_data$range - test_data_pred
-plot(lm_residuals)  # Plot residuals
+plot(lm_residuals)
+
+# Create a tibble for plotting
+residual_df <- tibble(
+  predicted = test_data_pred,
+  residuals = lm_residuals
+)
+
+# Residual plot
+residualsplot <- ggplot(residual_df, aes(x = predicted, y = residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "Residual Plot",
+    x = "Predicted Range",
+    y = "Residuals"
+  ) +
+  theme_minimal()
+
 ```
+
+No clear pattern in the residuals which is a good sign for the model.
 
 Source: Data Science Learning Community (2024). Tidy Tuesday: A weekly social data project. [https://tidytues.day](https://tidytues.day/)
 
